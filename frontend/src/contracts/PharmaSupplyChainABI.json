@@ -1,0 +1,189 @@
+[
+  {
+    "inputs": [],
+    "stateMutability": "nonpayable",
+    "type": "constructor"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      { "indexed": true, "internalType": "uint256", "name": "batchId", "type": "uint256" },
+      { "indexed": true, "internalType": "address", "name": "recalledBy", "type": "address" },
+      { "indexed": false, "internalType": "uint256", "name": "timestamp", "type": "uint256" }
+    ],
+    "name": "BatchRecalled",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      { "indexed": true, "internalType": "uint256", "name": "batchId", "type": "uint256" },
+      { "indexed": true, "internalType": "address", "name": "from", "type": "address" },
+      { "indexed": true, "internalType": "address", "name": "to", "type": "address" },
+      { "indexed": false, "internalType": "uint256", "name": "quantity", "type": "uint256" },
+      { "indexed": false, "internalType": "uint256", "name": "timestamp", "type": "uint256" }
+    ],
+    "name": "BatchTransferred",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      { "indexed": true, "internalType": "uint256", "name": "batchId", "type": "uint256" },
+      { "indexed": false, "internalType": "string", "name": "medicineName", "type": "string" },
+      { "indexed": false, "internalType": "string", "name": "batchNumber", "type": "string" },
+      { "indexed": true, "internalType": "address", "name": "manufacturer", "type": "address" }
+    ],
+    "name": "MedicineRegistered",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      { "indexed": true, "internalType": "address", "name": "participant", "type": "address" },
+      { "indexed": false, "internalType": "enum PharmaSupplyChain.Role", "name": "role", "type": "uint8" }
+    ],
+    "name": "ParticipantRegistered",
+    "type": "event"
+  },
+  {
+    "inputs": [],
+    "name": "admin",
+    "outputs": [{ "internalType": "address", "name": "", "type": "address" }],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [{ "internalType": "uint256", "name": "_batchId", "type": "uint256" }],
+    "name": "getMedicine",
+    "outputs": [
+      {
+        "components": [
+          { "internalType": "uint256", "name": "id", "type": "uint256" },
+          { "internalType": "string", "name": "medicineName", "type": "string" },
+          { "internalType": "string", "name": "batchNumber", "type": "string" },
+          { "internalType": "string", "name": "manufacturerName", "type": "string" },
+          { "internalType": "address", "name": "manufacturerAddress", "type": "address" },
+          { "internalType": "uint256", "name": "manufacturingDate", "type": "uint256" },
+          { "internalType": "uint256", "name": "expiryDate", "type": "uint256" },
+          { "internalType": "uint256", "name": "quantity", "type": "uint256" },
+          { "internalType": "address", "name": "currentOwner", "type": "address" },
+          { "internalType": "address", "name": "previousOwner", "type": "address" },
+          { "internalType": "enum PharmaSupplyChain.BatchStatus", "name": "status", "type": "uint8" },
+          { "internalType": "bool", "name": "exists", "type": "bool" }
+        ],
+        "internalType": "struct PharmaSupplyChain.MedicineBatch",
+        "name": "",
+        "type": "tuple"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [{ "internalType": "address", "name": "_participant", "type": "address" }],
+    "name": "getRole",
+    "outputs": [{ "internalType": "enum PharmaSupplyChain.Role", "name": "", "type": "uint8" }],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "getTotalBatches",
+    "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [{ "internalType": "uint256", "name": "_batchId", "type": "uint256" }],
+    "name": "getTransferHistory",
+    "outputs": [
+      {
+        "components": [
+          { "internalType": "address", "name": "from", "type": "address" },
+          { "internalType": "address", "name": "to", "type": "address" },
+          { "internalType": "uint256", "name": "timestamp", "type": "uint256" },
+          { "internalType": "uint256", "name": "quantity", "type": "uint256" }
+        ],
+        "internalType": "struct PharmaSupplyChain.Transfer[]",
+        "name": "",
+        "type": "tuple[]"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [{ "internalType": "uint256", "name": "_batchId", "type": "uint256" }],
+    "name": "isExpired",
+    "outputs": [{ "internalType": "bool", "name": "", "type": "bool" }],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [{ "internalType": "uint256", "name": "_batchId", "type": "uint256" }],
+    "name": "recallBatch",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      { "internalType": "string", "name": "_medicineName", "type": "string" },
+      { "internalType": "string", "name": "_batchNumber", "type": "string" },
+      { "internalType": "string", "name": "_manufacturerName", "type": "string" },
+      { "internalType": "uint256", "name": "_manufacturingDate", "type": "uint256" },
+      { "internalType": "uint256", "name": "_expiryDate", "type": "uint256" },
+      { "internalType": "uint256", "name": "_quantity", "type": "uint256" }
+    ],
+    "name": "registerMedicine",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      { "internalType": "address", "name": "_participant", "type": "address" },
+      { "internalType": "enum PharmaSupplyChain.Role", "name": "_role", "type": "uint8" }
+    ],
+    "name": "registerParticipant",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [{ "internalType": "address", "name": "", "type": "address" }],
+    "name": "roles",
+    "outputs": [{ "internalType": "enum PharmaSupplyChain.Role", "name": "", "type": "uint8" }],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      { "internalType": "uint256", "name": "_batchId", "type": "uint256" },
+      { "internalType": "address", "name": "_to", "type": "address" }
+    ],
+    "name": "transferBatch",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [{ "internalType": "uint256", "name": "_batchId", "type": "uint256" }],
+    "name": "verifyBatch",
+    "outputs": [
+      { "internalType": "bool", "name": "exists", "type": "bool" },
+      { "internalType": "string", "name": "medicineName", "type": "string" },
+      { "internalType": "string", "name": "batchNumber", "type": "string" },
+      { "internalType": "string", "name": "manufacturerName", "type": "string" },
+      { "internalType": "uint256", "name": "manufacturingDate", "type": "uint256" },
+      { "internalType": "uint256", "name": "expiryDate", "type": "uint256" },
+      { "internalType": "address", "name": "currentOwner", "type": "address" },
+      { "internalType": "enum PharmaSupplyChain.BatchStatus", "name": "status", "type": "uint8" },
+      { "internalType": "bool", "name": "expired", "type": "bool" },
+      { "internalType": "bool", "name": "authentic", "type": "bool" }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  }
+]

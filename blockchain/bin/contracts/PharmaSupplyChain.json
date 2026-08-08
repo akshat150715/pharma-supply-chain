@@ -1,0 +1,2274 @@
+{
+    "contractName": "PharmaSupplyChain",
+    "abi": [
+        {
+            "anonymous": false,
+            "inputs": [
+                {
+                    "indexed": true,
+                    "internalType": "uint256",
+                    "name": "batchId",
+                    "type": "uint256"
+                },
+                {
+                    "indexed": false,
+                    "internalType": "string",
+                    "name": "medicineName",
+                    "type": "string"
+                },
+                {
+                    "indexed": false,
+                    "internalType": "string",
+                    "name": "batchNumber",
+                    "type": "string"
+                },
+                {
+                    "indexed": true,
+                    "internalType": "address",
+                    "name": "manufacturer",
+                    "type": "address"
+                }
+            ],
+            "name": "MedicineRegistered",
+            "type": "event"
+        },
+        {
+            "inputs": [
+                {
+                    "internalType": "uint256",
+                    "name": "_batchId",
+                    "type": "uint256"
+                }
+            ],
+            "name": "getMedicine",
+            "outputs": [
+                {
+                    "components": [
+                        {
+                            "internalType": "uint256",
+                            "name": "id",
+                            "type": "uint256"
+                        },
+                        {
+                            "internalType": "string",
+                            "name": "medicineName",
+                            "type": "string"
+                        },
+                        {
+                            "internalType": "string",
+                            "name": "batchNumber",
+                            "type": "string"
+                        },
+                        {
+                            "internalType": "string",
+                            "name": "manufacturer",
+                            "type": "string"
+                        },
+                        {
+                            "internalType": "uint256",
+                            "name": "manufacturingDate",
+                            "type": "uint256"
+                        },
+                        {
+                            "internalType": "uint256",
+                            "name": "expiryDate",
+                            "type": "uint256"
+                        },
+                        {
+                            "internalType": "uint256",
+                            "name": "quantity",
+                            "type": "uint256"
+                        },
+                        {
+                            "internalType": "address",
+                            "name": "currentOwner",
+                            "type": "address"
+                        },
+                        {
+                            "internalType": "bool",
+                            "name": "exists",
+                            "type": "bool"
+                        }
+                    ],
+                    "internalType": "struct PharmaSupplyChain.MedicineBatch",
+                    "name": "",
+                    "type": "tuple"
+                }
+            ],
+            "stateMutability": "view",
+            "type": "function"
+        },
+        {
+            "inputs": [],
+            "name": "getTotalBatches",
+            "outputs": [
+                {
+                    "internalType": "uint256",
+                    "name": "",
+                    "type": "uint256"
+                }
+            ],
+            "stateMutability": "view",
+            "type": "function"
+        },
+        {
+            "inputs": [
+                {
+                    "internalType": "string",
+                    "name": "_medicineName",
+                    "type": "string"
+                },
+                {
+                    "internalType": "string",
+                    "name": "_batchNumber",
+                    "type": "string"
+                },
+                {
+                    "internalType": "string",
+                    "name": "_manufacturer",
+                    "type": "string"
+                },
+                {
+                    "internalType": "uint256",
+                    "name": "_manufacturingDate",
+                    "type": "uint256"
+                },
+                {
+                    "internalType": "uint256",
+                    "name": "_expiryDate",
+                    "type": "uint256"
+                },
+                {
+                    "internalType": "uint256",
+                    "name": "_quantity",
+                    "type": "uint256"
+                }
+            ],
+            "name": "registerMedicine",
+            "outputs": [],
+            "stateMutability": "nonpayable",
+            "type": "function"
+        }
+    ],
+    "metadata": "{\"compiler\":{\"version\":\"0.8.36+commit.8a079791\"},\"language\":\"Solidity\",\"output\":{\"abi\":[{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"internalType\":\"uint256\",\"name\":\"batchId\",\"type\":\"uint256\"},{\"indexed\":false,\"internalType\":\"string\",\"name\":\"medicineName\",\"type\":\"string\"},{\"indexed\":false,\"internalType\":\"string\",\"name\":\"batchNumber\",\"type\":\"string\"},{\"indexed\":true,\"internalType\":\"address\",\"name\":\"manufacturer\",\"type\":\"address\"}],\"name\":\"MedicineRegistered\",\"type\":\"event\"},{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"_batchId\",\"type\":\"uint256\"}],\"name\":\"getMedicine\",\"outputs\":[{\"components\":[{\"internalType\":\"uint256\",\"name\":\"id\",\"type\":\"uint256\"},{\"internalType\":\"string\",\"name\":\"medicineName\",\"type\":\"string\"},{\"internalType\":\"string\",\"name\":\"batchNumber\",\"type\":\"string\"},{\"internalType\":\"string\",\"name\":\"manufacturer\",\"type\":\"string\"},{\"internalType\":\"uint256\",\"name\":\"manufacturingDate\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"expiryDate\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"quantity\",\"type\":\"uint256\"},{\"internalType\":\"address\",\"name\":\"currentOwner\",\"type\":\"address\"},{\"internalType\":\"bool\",\"name\":\"exists\",\"type\":\"bool\"}],\"internalType\":\"struct PharmaSupplyChain.MedicineBatch\",\"name\":\"\",\"type\":\"tuple\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"getTotalBatches\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"string\",\"name\":\"_medicineName\",\"type\":\"string\"},{\"internalType\":\"string\",\"name\":\"_batchNumber\",\"type\":\"string\"},{\"internalType\":\"string\",\"name\":\"_manufacturer\",\"type\":\"string\"},{\"internalType\":\"uint256\",\"name\":\"_manufacturingDate\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"_expiryDate\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"_quantity\",\"type\":\"uint256\"}],\"name\":\"registerMedicine\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"}],\"devdoc\":{\"kind\":\"dev\",\"methods\":{},\"version\":1},\"userdoc\":{\"kind\":\"user\",\"methods\":{},\"version\":1}},\"settings\":{\"compilationTarget\":{\"c:/Users/HP/pharma-supply-chain/blockchain/contracts/PharmaSupplyChain.sol\":\"PharmaSupplyChain\"},\"evmVersion\":\"osaka\",\"libraries\":{},\"metadata\":{\"bytecodeHash\":\"ipfs\"},\"optimizer\":{\"enabled\":true,\"runs\":200},\"remappings\":[],\"viaIR\":true},\"sources\":{\"c:/Users/HP/pharma-supply-chain/blockchain/contracts/PharmaSupplyChain.sol\":{\"keccak256\":\"0x534ab3b40fef888377baa464f2cf0b4d2a5a2fce77ba9a81bc97808254a29847\",\"license\":\"MIT\",\"urls\":[\"bzz-raw://0c89e6dcdf6604d4a594489ef8b42f5b6217a5fb5f4183b562970464e48b740f\",\"dweb:/ipfs/QmZGSezjsrdzGMRbefBqB2HQC1BEhnc8ej4iBJgSSnrhzX\"]}},\"version\":1}",
+    "bytecode": "6080806040523460195760015f55610a4b908161001e8239f35b5f80fdfe60806040526004361015610011575f80fd5b5f3560e01c8063046a5a0b14610253578063a67422651461007a5763e561dddc1461003a575f80fd5b34610076575f366003190112610076575f545f19810190811161006257602090604051908152f35b634e487b7160e01b5f52601160045260245ffd5b5f80fd5b34610076576020366003190112610076576004355f61010060405161009e81610884565b82815260606020820152606060408201526060808201528260808201528260a08201528260c08201528260e08201520152805f52600160205260ff600760405f20015460a01c161561020e575f52600160205260405f2060405161010181610884565b8154815261011160018301610975565b916020820192835261012560028201610975565b6040830190815261013860038301610975565b906060840191825260048301549260808501938452600581015460a086019081526101de600760068401549360c089019485520154946101cb60e089019560018060a01b038816875260ff6101008b019860a01c16151588526101b86040519b8c9b60208d525160208d01525161012060408d01526101408c0190610919565b90518a8203601f190160608c0152610919565b9051888203601f190160808a0152610919565b945160a08701525160c08601525160e0850152516001600160a01b03166101008401525115156101208301520390f35b60405162461bcd60e51b815260206004820152601d60248201527f4d65646963696e6520626174636820646f6573206e6f742065786973740000006044820152606490fd5b346100765760c03660031901126100765760043567ffffffffffffffff8111610076576102849036906004016108c3565b60243567ffffffffffffffff8111610076576102a49036906004016108c3565b60443567ffffffffffffffff8111610076576102c49036906004016108c3565b9160643560843560a43590835115610846578451156108095781156107b95782811115610764575f5491604051916102fb83610884565b83835260208301948686526040840188815260608501998a526080850191825260a0850192835260c0850193845260e0850196338852610100860196600188525f52600160205260405f209551865560018601905180519067ffffffffffffffff82116105c257819061036e845461093d565b601f811161070b575b50602090601f83116001146106a8575f9261069d575b50508160011b915f199060031b1c19161790555b518051600286019167ffffffffffffffff82116105c25781906103c4845461093d565b601f8111610644575b50602090601f83116001146105e1575f926105d6575b50508160011b915f199060031b1c19161790555b60038401985198895167ffffffffffffffff81116105c257610419825461093d565b601f8111610571575b506020601f821160011461050557908060079796959493926104d99d5f926104fa575b50508160011b915f199060031b1c19161790555b516004840155516005830155516006820155019160018060a01b0390511682549160ff60a01b9051151560a01b16916affffffffffffffffffffff60a81b16171790557f6f131df648341bb5d1d65fe3eaa132ec45e52d4afc54c1f496f73f1b9f1307325f549384926104e8604051928392604084526040840190610919565b82810360208401523396610919565b0390a35f198114610062576001015f55005b015190508d80610445565b601f19821690835f52805f20915f5b81811061055957509183916104d99e60079a999897969560019510610541575b505050811b019055610459565b01515f1960f88460031b161c191690558d8080610534565b8e830151845560019093019260209283019201610514565b8181111561042257825f5260205f20601f830160051c90602084106105ba575b81601f9101920160051c03905f5b8281106105ad575050610422565b5f8282015560010161059f565b5f9150610591565b634e487b7160e01b5f52604160045260245ffd5b015190508c806103e3565b5f8581528281209350601f198516905b81811061062c5750908460019594939210610614575b505050811b0190556103f7565b01515f1960f88460031b161c191690558c8080610607565b929360206001819287860151815501950193016105f1565b828111156103cd57909150835f5260205f20601f840160051c9060208510610695575b849392601f0160051c82900391015f5b8281106106855750506103cd565b5f81830155859450600101610677565b5f9150610667565b015190508d8061038d565b5f8581528281209350601f198516905b8181106106f357509084600195949392106106db575b505050811b0190556103a1565b01515f1960f88460031b161c191690558d80806106ce565b929360206001819287860151815501950193016106b8565b8281111561037757909150835f5260205f20601f840160051c906020851061075c575b849392601f0160051c82900391015f5b82811061074c575050610377565b5f8183015585945060010161073e565b5f915061072e565b60405162461bcd60e51b815260206004820152602760248201527f457870697279206d757374206265206166746572206d616e75666163747572696044820152666e67206461746560c81b6064820152608490fd5b60405162461bcd60e51b815260206004820152602260248201527f5175616e74697479206d7573742062652067726561746572207468616e207a65604482015261726f60f01b6064820152608490fd5b60405162461bcd60e51b815260206004820152601560248201527410985d18da081b9d5b58995c881c995c5d5a5c9959605a1b6044820152606490fd5b60405162461bcd60e51b81526020600482015260166024820152751359591a58da5b99481b985b59481c995c5d5a5c995960521b6044820152606490fd5b610120810190811067ffffffffffffffff8211176105c257604052565b90601f8019910116810190811067ffffffffffffffff8211176105c257604052565b81601f820112156100765780359067ffffffffffffffff82116105c257604051926108f8601f8401601f1916602001856108a1565b8284526020838301011161007657815f926020809301838601378301015290565b805180835260209291819084018484015e5f828201840152601f01601f1916010190565b90600182811c9216801561096b575b602083101461095757565b634e487b7160e01b5f52602260045260245ffd5b91607f169161094c565b9060405191825f8254926109888461093d565b80845293600181169081156109f357506001146109af575b506109ad925003836108a1565b565b90505f9291925260205f20905f915b8183106109d75750509060206109ad928201015f6109a0565b60209193508060019154838589010152019101909184926109be565b9050602092506109ad94915060ff191682840152151560051b8201015f6109a056fea2646970667358221220ce67da80c5e2bc8c01170ca42d01d118c881024417a16e035a10249e77f0e89964736f6c63430008240033",
+    "deployedBytecode": "60806040526004361015610011575f80fd5b5f3560e01c8063046a5a0b14610253578063a67422651461007a5763e561dddc1461003a575f80fd5b34610076575f366003190112610076575f545f19810190811161006257602090604051908152f35b634e487b7160e01b5f52601160045260245ffd5b5f80fd5b34610076576020366003190112610076576004355f61010060405161009e81610884565b82815260606020820152606060408201526060808201528260808201528260a08201528260c08201528260e08201520152805f52600160205260ff600760405f20015460a01c161561020e575f52600160205260405f2060405161010181610884565b8154815261011160018301610975565b916020820192835261012560028201610975565b6040830190815261013860038301610975565b906060840191825260048301549260808501938452600581015460a086019081526101de600760068401549360c089019485520154946101cb60e089019560018060a01b038816875260ff6101008b019860a01c16151588526101b86040519b8c9b60208d525160208d01525161012060408d01526101408c0190610919565b90518a8203601f190160608c0152610919565b9051888203601f190160808a0152610919565b945160a08701525160c08601525160e0850152516001600160a01b03166101008401525115156101208301520390f35b60405162461bcd60e51b815260206004820152601d60248201527f4d65646963696e6520626174636820646f6573206e6f742065786973740000006044820152606490fd5b346100765760c03660031901126100765760043567ffffffffffffffff8111610076576102849036906004016108c3565b60243567ffffffffffffffff8111610076576102a49036906004016108c3565b60443567ffffffffffffffff8111610076576102c49036906004016108c3565b9160643560843560a43590835115610846578451156108095781156107b95782811115610764575f5491604051916102fb83610884565b83835260208301948686526040840188815260608501998a526080850191825260a0850192835260c0850193845260e0850196338852610100860196600188525f52600160205260405f209551865560018601905180519067ffffffffffffffff82116105c257819061036e845461093d565b601f811161070b575b50602090601f83116001146106a8575f9261069d575b50508160011b915f199060031b1c19161790555b518051600286019167ffffffffffffffff82116105c25781906103c4845461093d565b601f8111610644575b50602090601f83116001146105e1575f926105d6575b50508160011b915f199060031b1c19161790555b60038401985198895167ffffffffffffffff81116105c257610419825461093d565b601f8111610571575b506020601f821160011461050557908060079796959493926104d99d5f926104fa575b50508160011b915f199060031b1c19161790555b516004840155516005830155516006820155019160018060a01b0390511682549160ff60a01b9051151560a01b16916affffffffffffffffffffff60a81b16171790557f6f131df648341bb5d1d65fe3eaa132ec45e52d4afc54c1f496f73f1b9f1307325f549384926104e8604051928392604084526040840190610919565b82810360208401523396610919565b0390a35f198114610062576001015f55005b015190508d80610445565b601f19821690835f52805f20915f5b81811061055957509183916104d99e60079a999897969560019510610541575b505050811b019055610459565b01515f1960f88460031b161c191690558d8080610534565b8e830151845560019093019260209283019201610514565b8181111561042257825f5260205f20601f830160051c90602084106105ba575b81601f9101920160051c03905f5b8281106105ad575050610422565b5f8282015560010161059f565b5f9150610591565b634e487b7160e01b5f52604160045260245ffd5b015190508c806103e3565b5f8581528281209350601f198516905b81811061062c5750908460019594939210610614575b505050811b0190556103f7565b01515f1960f88460031b161c191690558c8080610607565b929360206001819287860151815501950193016105f1565b828111156103cd57909150835f5260205f20601f840160051c9060208510610695575b849392601f0160051c82900391015f5b8281106106855750506103cd565b5f81830155859450600101610677565b5f9150610667565b015190508d8061038d565b5f8581528281209350601f198516905b8181106106f357509084600195949392106106db575b505050811b0190556103a1565b01515f1960f88460031b161c191690558d80806106ce565b929360206001819287860151815501950193016106b8565b8281111561037757909150835f5260205f20601f840160051c906020851061075c575b849392601f0160051c82900391015f5b82811061074c575050610377565b5f8183015585945060010161073e565b5f915061072e565b60405162461bcd60e51b815260206004820152602760248201527f457870697279206d757374206265206166746572206d616e75666163747572696044820152666e67206461746560c81b6064820152608490fd5b60405162461bcd60e51b815260206004820152602260248201527f5175616e74697479206d7573742062652067726561746572207468616e207a65604482015261726f60f01b6064820152608490fd5b60405162461bcd60e51b815260206004820152601560248201527410985d18da081b9d5b58995c881c995c5d5a5c9959605a1b6044820152606490fd5b60405162461bcd60e51b81526020600482015260166024820152751359591a58da5b99481b985b59481c995c5d5a5c995960521b6044820152606490fd5b610120810190811067ffffffffffffffff8211176105c257604052565b90601f8019910116810190811067ffffffffffffffff8211176105c257604052565b81601f820112156100765780359067ffffffffffffffff82116105c257604051926108f8601f8401601f1916602001856108a1565b8284526020838301011161007657815f926020809301838601378301015290565b805180835260209291819084018484015e5f828201840152601f01601f1916010190565b90600182811c9216801561096b575b602083101461095757565b634e487b7160e01b5f52602260045260245ffd5b91607f169161094c565b9060405191825f8254926109888461093d565b80845293600181169081156109f357506001146109af575b506109ad925003836108a1565b565b90505f9291925260205f20905f915b8183106109d75750509060206109ad928201015f6109a0565b60209193508060019154838589010152019101909184926109be565b9050602092506109ad94915060ff191682840152151560051b8201015f6109a056fea2646970667358221220ce67da80c5e2bc8c01170ca42d01d118c881024417a16e035a10249e77f0e89964736f6c63430008240033",
+    "sourceMap": "61:2351:0:-:0;;;;;;;419:1;;61:2351;;;;;;;;;;;",
+    "deployedSourceMap": "61:2351:0:-:0;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;-1:-1:-1;;61:2351:0;;;;;;-1:-1:-1;;61:2351:0;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;-1:-1:-1;;61:2351:0;;;;;;;;;;;;;:::i;:::-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;2145:24;61:2351;;;2145:24;61:2351;;;;;;;;;;;;;;;;;;;;:::i;:::-;;;;;;;;;;:::i;:::-;;;;;;;;;;;;;:::i;:::-;;;;;;;;;;;;:::i;:::-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;2145:24;61:2351;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;:::i;:::-;;;;;;-1:-1:-1;;61:2351:0;;;;;;:::i;:::-;;;;;;-1:-1:-1;;61:2351:0;;;;;;:::i;:::-;;;;;;;;;;;;;;;;;;-1:-1:-1;;;;;61:2351:0;;;;;;;;;;;;;;;;;;-1:-1:-1;;;61:2351:0;;;;;;;;;;;;;;;;;;;;;;;;;;-1:-1:-1;;61:2351:0;;;;;;;;;;;;;;;;;;:::i;:::-;;;;;;;;;;;;;;;:::i;:::-;;;;;;;;;;;;;;;:::i;:::-;;;;;;;;;;;942:31;61:2351;;;;1058:30;61:2351;;1172:13;;61:2351;;1282:32;;;61:2351;;;;;;;;;;;;:::i;:::-;;;;;1417:370;;61:2351;;;;;1417:370;;61:2351;;;;1417:370;;61:2351;;;;1417:370;;61:2351;;;;1417:370;;61:2351;;;;1417:370;;61:2351;;;;1417:370;;1738:10;;61:2351;;1417:370;;;61:2351;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;:::i;:::-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;:::i;:::-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;:::i;:::-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;1805:135;61:2351;;;;;;;;;;;;;;;;;;;:::i;:::-;;;;;;;;1738:10;61:2351;;:::i;:::-;1805:135;;;-1:-1:-1;;61:2351:0;;;;;;;;;;;;;-1:-1:-1;61:2351:0;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;-1:-1:-1;61:2351:0;;;;;;;;;;;;;;;;;;-1:-1:-1;61:2351:0;;;;;;;;;;;;;-1:-1:-1;;;61:2351:0;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;-1:-1:-1;61:2351:0;;;;;;;-1:-1:-1;61:2351:0;;;;;;-1:-1:-1;61:2351:0;;;;;;;;;;;;;-1:-1:-1;;;61:2351:0;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;-1:-1:-1;61:2351:0;;;;;;;-1:-1:-1;61:2351:0;;;;;-1:-1:-1;;;61:2351:0;;;;;;;;;;;;;;;;;-1:-1:-1;;;61:2351:0;;;;;;;;;;-1:-1:-1;;;61:2351:0;;;;;;;;;;;;;;;;;-1:-1:-1;;;61:2351:0;;;;;;;;;;-1:-1:-1;;;61:2351:0;;;;;;;;;;;;-1:-1:-1;;;61:2351:0;;;;;;;;;;-1:-1:-1;;;61:2351:0;;;;;;;;;;;;-1:-1:-1;;;61:2351:0;;;;;;;;;;;;;;;;;;;;;;:::o;:::-;;;;;;;;;;;;;;;;;;;;;:::o;:::-;;;;;;;;;;;;;;;;;;;;;;;;-1:-1:-1;;61:2351:0;;;;;:::i;:::-;;;;;;;;;;;;;-1:-1:-1;61:2351:0;;;;;;;;;;;;;;:::o;:::-;;;;;;;;;;;;;;;;;-1:-1:-1;61:2351:0;;;;;;;;-1:-1:-1;;61:2351:0;;;;:::o;:::-;;;;;;;;;;;;;;;;;;;:::o;:::-;;;;;;;;;;;;;;;;;;;;;;;;;-1:-1:-1;61:2351:0;;;;;;:::i;:::-;;;;;;;;;;;;;;;;;;;;;;;;;;:::i;:::-;:::o;:::-;;;-1:-1:-1;61:2351:0;;;;;-1:-1:-1;61:2351:0;;-1:-1:-1;61:2351:0;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;",
+    "sourcePath": "c:/Users/HP/pharma-supply-chain/blockchain/contracts/PharmaSupplyChain.sol",
+    "compiler": {
+        "name": "solc",
+        "version": "0.8.36+commit.8a079791"
+    },
+    "ast": {
+        "absolutePath": "c:/Users/HP/pharma-supply-chain/blockchain/contracts/PharmaSupplyChain.sol",
+        "exportedSymbols": {
+            "PharmaSupplyChain": [
+                150
+            ]
+        },
+        "id": 151,
+        "license": "MIT",
+        "nodeType": "SourceUnit",
+        "nodes": [
+            {
+                "id": 1,
+                "literals": [
+                    "solidity",
+                    "^",
+                    "0.8",
+                    ".28"
+                ],
+                "nodeType": "PragmaDirective",
+                "src": "33:24:0"
+            },
+            {
+                "abstract": false,
+                "baseContracts": [],
+                "canonicalName": "PharmaSupplyChain",
+                "contractDependencies": [],
+                "contractKind": "contract",
+                "fullyImplemented": true,
+                "id": 150,
+                "linearizedBaseContracts": [
+                    150
+                ],
+                "name": "PharmaSupplyChain",
+                "nameLocation": "70:17:0",
+                "nodeType": "ContractDefinition",
+                "nodes": [
+                    {
+                        "canonicalName": "PharmaSupplyChain.MedicineBatch",
+                        "id": 20,
+                        "members": [
+                            {
+                                "constant": false,
+                                "id": 3,
+                                "mutability": "mutable",
+                                "name": "id",
+                                "nameLocation": "137:2:0",
+                                "nodeType": "VariableDeclaration",
+                                "scope": 20,
+                                "src": "129:10:0",
+                                "stateVariable": false,
+                                "storageLocation": "default",
+                                "typeDescriptions": {
+                                    "typeIdentifier": "t_uint256",
+                                    "typeString": "uint256"
+                                },
+                                "typeName": {
+                                    "id": 2,
+                                    "name": "uint256",
+                                    "nodeType": "ElementaryTypeName",
+                                    "src": "129:7:0",
+                                    "typeDescriptions": {
+                                        "typeIdentifier": "t_uint256",
+                                        "typeString": "uint256"
+                                    }
+                                },
+                                "visibility": "internal"
+                            },
+                            {
+                                "constant": false,
+                                "id": 5,
+                                "mutability": "mutable",
+                                "name": "medicineName",
+                                "nameLocation": "157:12:0",
+                                "nodeType": "VariableDeclaration",
+                                "scope": 20,
+                                "src": "150:19:0",
+                                "stateVariable": false,
+                                "storageLocation": "default",
+                                "typeDescriptions": {
+                                    "typeIdentifier": "t_string_storage_ptr",
+                                    "typeString": "string"
+                                },
+                                "typeName": {
+                                    "id": 4,
+                                    "name": "string",
+                                    "nodeType": "ElementaryTypeName",
+                                    "src": "150:6:0",
+                                    "typeDescriptions": {
+                                        "typeIdentifier": "t_string_storage_ptr",
+                                        "typeString": "string"
+                                    }
+                                },
+                                "visibility": "internal"
+                            },
+                            {
+                                "constant": false,
+                                "id": 7,
+                                "mutability": "mutable",
+                                "name": "batchNumber",
+                                "nameLocation": "187:11:0",
+                                "nodeType": "VariableDeclaration",
+                                "scope": 20,
+                                "src": "180:18:0",
+                                "stateVariable": false,
+                                "storageLocation": "default",
+                                "typeDescriptions": {
+                                    "typeIdentifier": "t_string_storage_ptr",
+                                    "typeString": "string"
+                                },
+                                "typeName": {
+                                    "id": 6,
+                                    "name": "string",
+                                    "nodeType": "ElementaryTypeName",
+                                    "src": "180:6:0",
+                                    "typeDescriptions": {
+                                        "typeIdentifier": "t_string_storage_ptr",
+                                        "typeString": "string"
+                                    }
+                                },
+                                "visibility": "internal"
+                            },
+                            {
+                                "constant": false,
+                                "id": 9,
+                                "mutability": "mutable",
+                                "name": "manufacturer",
+                                "nameLocation": "216:12:0",
+                                "nodeType": "VariableDeclaration",
+                                "scope": 20,
+                                "src": "209:19:0",
+                                "stateVariable": false,
+                                "storageLocation": "default",
+                                "typeDescriptions": {
+                                    "typeIdentifier": "t_string_storage_ptr",
+                                    "typeString": "string"
+                                },
+                                "typeName": {
+                                    "id": 8,
+                                    "name": "string",
+                                    "nodeType": "ElementaryTypeName",
+                                    "src": "209:6:0",
+                                    "typeDescriptions": {
+                                        "typeIdentifier": "t_string_storage_ptr",
+                                        "typeString": "string"
+                                    }
+                                },
+                                "visibility": "internal"
+                            },
+                            {
+                                "constant": false,
+                                "id": 11,
+                                "mutability": "mutable",
+                                "name": "manufacturingDate",
+                                "nameLocation": "247:17:0",
+                                "nodeType": "VariableDeclaration",
+                                "scope": 20,
+                                "src": "239:25:0",
+                                "stateVariable": false,
+                                "storageLocation": "default",
+                                "typeDescriptions": {
+                                    "typeIdentifier": "t_uint256",
+                                    "typeString": "uint256"
+                                },
+                                "typeName": {
+                                    "id": 10,
+                                    "name": "uint256",
+                                    "nodeType": "ElementaryTypeName",
+                                    "src": "239:7:0",
+                                    "typeDescriptions": {
+                                        "typeIdentifier": "t_uint256",
+                                        "typeString": "uint256"
+                                    }
+                                },
+                                "visibility": "internal"
+                            },
+                            {
+                                "constant": false,
+                                "id": 13,
+                                "mutability": "mutable",
+                                "name": "expiryDate",
+                                "nameLocation": "283:10:0",
+                                "nodeType": "VariableDeclaration",
+                                "scope": 20,
+                                "src": "275:18:0",
+                                "stateVariable": false,
+                                "storageLocation": "default",
+                                "typeDescriptions": {
+                                    "typeIdentifier": "t_uint256",
+                                    "typeString": "uint256"
+                                },
+                                "typeName": {
+                                    "id": 12,
+                                    "name": "uint256",
+                                    "nodeType": "ElementaryTypeName",
+                                    "src": "275:7:0",
+                                    "typeDescriptions": {
+                                        "typeIdentifier": "t_uint256",
+                                        "typeString": "uint256"
+                                    }
+                                },
+                                "visibility": "internal"
+                            },
+                            {
+                                "constant": false,
+                                "id": 15,
+                                "mutability": "mutable",
+                                "name": "quantity",
+                                "nameLocation": "312:8:0",
+                                "nodeType": "VariableDeclaration",
+                                "scope": 20,
+                                "src": "304:16:0",
+                                "stateVariable": false,
+                                "storageLocation": "default",
+                                "typeDescriptions": {
+                                    "typeIdentifier": "t_uint256",
+                                    "typeString": "uint256"
+                                },
+                                "typeName": {
+                                    "id": 14,
+                                    "name": "uint256",
+                                    "nodeType": "ElementaryTypeName",
+                                    "src": "304:7:0",
+                                    "typeDescriptions": {
+                                        "typeIdentifier": "t_uint256",
+                                        "typeString": "uint256"
+                                    }
+                                },
+                                "visibility": "internal"
+                            },
+                            {
+                                "constant": false,
+                                "id": 17,
+                                "mutability": "mutable",
+                                "name": "currentOwner",
+                                "nameLocation": "339:12:0",
+                                "nodeType": "VariableDeclaration",
+                                "scope": 20,
+                                "src": "331:20:0",
+                                "stateVariable": false,
+                                "storageLocation": "default",
+                                "typeDescriptions": {
+                                    "typeIdentifier": "t_address",
+                                    "typeString": "address"
+                                },
+                                "typeName": {
+                                    "id": 16,
+                                    "name": "address",
+                                    "nodeType": "ElementaryTypeName",
+                                    "src": "331:7:0",
+                                    "stateMutability": "nonpayable",
+                                    "typeDescriptions": {
+                                        "typeIdentifier": "t_address",
+                                        "typeString": "address"
+                                    }
+                                },
+                                "visibility": "internal"
+                            },
+                            {
+                                "constant": false,
+                                "id": 19,
+                                "mutability": "mutable",
+                                "name": "exists",
+                                "nameLocation": "367:6:0",
+                                "nodeType": "VariableDeclaration",
+                                "scope": 20,
+                                "src": "362:11:0",
+                                "stateVariable": false,
+                                "storageLocation": "default",
+                                "typeDescriptions": {
+                                    "typeIdentifier": "t_bool",
+                                    "typeString": "bool"
+                                },
+                                "typeName": {
+                                    "id": 18,
+                                    "name": "bool",
+                                    "nodeType": "ElementaryTypeName",
+                                    "src": "362:4:0",
+                                    "typeDescriptions": {
+                                        "typeIdentifier": "t_bool",
+                                        "typeString": "bool"
+                                    }
+                                },
+                                "visibility": "internal"
+                            }
+                        ],
+                        "name": "MedicineBatch",
+                        "nameLocation": "104:13:0",
+                        "nodeType": "StructDefinition",
+                        "scope": 150,
+                        "src": "97:284:0",
+                        "visibility": "public"
+                    },
+                    {
+                        "constant": false,
+                        "id": 23,
+                        "mutability": "mutable",
+                        "name": "nextBatchId",
+                        "nameLocation": "405:11:0",
+                        "nodeType": "VariableDeclaration",
+                        "scope": 150,
+                        "src": "389:31:0",
+                        "stateVariable": true,
+                        "storageLocation": "default",
+                        "typeDescriptions": {
+                            "typeIdentifier": "t_uint256",
+                            "typeString": "uint256"
+                        },
+                        "typeName": {
+                            "id": 21,
+                            "name": "uint256",
+                            "nodeType": "ElementaryTypeName",
+                            "src": "389:7:0",
+                            "typeDescriptions": {
+                                "typeIdentifier": "t_uint256",
+                                "typeString": "uint256"
+                            }
+                        },
+                        "value": {
+                            "hexValue": "31",
+                            "id": 22,
+                            "isConstant": false,
+                            "isLValue": false,
+                            "isPure": true,
+                            "kind": "number",
+                            "lValueRequested": false,
+                            "nodeType": "Literal",
+                            "src": "419:1:0",
+                            "typeDescriptions": {
+                                "typeIdentifier": "t_rational_1_by_1",
+                                "typeString": "int_const 1"
+                            },
+                            "value": "1"
+                        },
+                        "visibility": "private"
+                    },
+                    {
+                        "constant": false,
+                        "id": 28,
+                        "mutability": "mutable",
+                        "name": "batches",
+                        "nameLocation": "471:7:0",
+                        "nodeType": "VariableDeclaration",
+                        "scope": 150,
+                        "src": "429:49:0",
+                        "stateVariable": true,
+                        "storageLocation": "default",
+                        "typeDescriptions": {
+                            "typeIdentifier": "t_mapping$_t_uint256_$_t_struct$_MedicineBatch_$20_storage_$",
+                            "typeString": "mapping(uint256 => struct PharmaSupplyChain.MedicineBatch)"
+                        },
+                        "typeName": {
+                            "id": 27,
+                            "keyName": "",
+                            "keyNameLocation": "-1:-1:-1",
+                            "keyType": {
+                                "id": 24,
+                                "name": "uint256",
+                                "nodeType": "ElementaryTypeName",
+                                "src": "437:7:0",
+                                "typeDescriptions": {
+                                    "typeIdentifier": "t_uint256",
+                                    "typeString": "uint256"
+                                }
+                            },
+                            "nodeType": "Mapping",
+                            "src": "429:33:0",
+                            "typeDescriptions": {
+                                "typeIdentifier": "t_mapping$_t_uint256_$_t_struct$_MedicineBatch_$20_storage_$",
+                                "typeString": "mapping(uint256 => struct PharmaSupplyChain.MedicineBatch)"
+                            },
+                            "valueName": "",
+                            "valueNameLocation": "-1:-1:-1",
+                            "valueType": {
+                                "id": 26,
+                                "nodeType": "UserDefinedTypeName",
+                                "pathNode": {
+                                    "id": 25,
+                                    "name": "MedicineBatch",
+                                    "nameLocations": [
+                                        "448:13:0"
+                                    ],
+                                    "nodeType": "IdentifierPath",
+                                    "referencedDeclaration": 20,
+                                    "src": "448:13:0"
+                                },
+                                "referencedDeclaration": 20,
+                                "src": "448:13:0",
+                                "typeDescriptions": {
+                                    "typeIdentifier": "t_struct$_MedicineBatch_$20_storage_ptr",
+                                    "typeString": "struct PharmaSupplyChain.MedicineBatch"
+                                }
+                            }
+                        },
+                        "visibility": "private"
+                    },
+                    {
+                        "anonymous": false,
+                        "eventSelector": "6f131df648341bb5d1d65fe3eaa132ec45e52d4afc54c1f496f73f1b9f130732",
+                        "id": 38,
+                        "name": "MedicineRegistered",
+                        "nameLocation": "493:18:0",
+                        "nodeType": "EventDefinition",
+                        "parameters": {
+                            "id": 37,
+                            "nodeType": "ParameterList",
+                            "parameters": [
+                                {
+                                    "constant": false,
+                                    "id": 30,
+                                    "indexed": true,
+                                    "mutability": "mutable",
+                                    "name": "batchId",
+                                    "nameLocation": "538:7:0",
+                                    "nodeType": "VariableDeclaration",
+                                    "scope": 38,
+                                    "src": "522:23:0",
+                                    "stateVariable": false,
+                                    "storageLocation": "default",
+                                    "typeDescriptions": {
+                                        "typeIdentifier": "t_uint256",
+                                        "typeString": "uint256"
+                                    },
+                                    "typeName": {
+                                        "id": 29,
+                                        "name": "uint256",
+                                        "nodeType": "ElementaryTypeName",
+                                        "src": "522:7:0",
+                                        "typeDescriptions": {
+                                            "typeIdentifier": "t_uint256",
+                                            "typeString": "uint256"
+                                        }
+                                    },
+                                    "visibility": "internal"
+                                },
+                                {
+                                    "constant": false,
+                                    "id": 32,
+                                    "indexed": false,
+                                    "mutability": "mutable",
+                                    "name": "medicineName",
+                                    "nameLocation": "563:12:0",
+                                    "nodeType": "VariableDeclaration",
+                                    "scope": 38,
+                                    "src": "556:19:0",
+                                    "stateVariable": false,
+                                    "storageLocation": "default",
+                                    "typeDescriptions": {
+                                        "typeIdentifier": "t_string_memory_ptr",
+                                        "typeString": "string"
+                                    },
+                                    "typeName": {
+                                        "id": 31,
+                                        "name": "string",
+                                        "nodeType": "ElementaryTypeName",
+                                        "src": "556:6:0",
+                                        "typeDescriptions": {
+                                            "typeIdentifier": "t_string_storage_ptr",
+                                            "typeString": "string"
+                                        }
+                                    },
+                                    "visibility": "internal"
+                                },
+                                {
+                                    "constant": false,
+                                    "id": 34,
+                                    "indexed": false,
+                                    "mutability": "mutable",
+                                    "name": "batchNumber",
+                                    "nameLocation": "593:11:0",
+                                    "nodeType": "VariableDeclaration",
+                                    "scope": 38,
+                                    "src": "586:18:0",
+                                    "stateVariable": false,
+                                    "storageLocation": "default",
+                                    "typeDescriptions": {
+                                        "typeIdentifier": "t_string_memory_ptr",
+                                        "typeString": "string"
+                                    },
+                                    "typeName": {
+                                        "id": 33,
+                                        "name": "string",
+                                        "nodeType": "ElementaryTypeName",
+                                        "src": "586:6:0",
+                                        "typeDescriptions": {
+                                            "typeIdentifier": "t_string_storage_ptr",
+                                            "typeString": "string"
+                                        }
+                                    },
+                                    "visibility": "internal"
+                                },
+                                {
+                                    "constant": false,
+                                    "id": 36,
+                                    "indexed": true,
+                                    "mutability": "mutable",
+                                    "name": "manufacturer",
+                                    "nameLocation": "631:12:0",
+                                    "nodeType": "VariableDeclaration",
+                                    "scope": 38,
+                                    "src": "615:28:0",
+                                    "stateVariable": false,
+                                    "storageLocation": "default",
+                                    "typeDescriptions": {
+                                        "typeIdentifier": "t_address",
+                                        "typeString": "address"
+                                    },
+                                    "typeName": {
+                                        "id": 35,
+                                        "name": "address",
+                                        "nodeType": "ElementaryTypeName",
+                                        "src": "615:7:0",
+                                        "stateMutability": "nonpayable",
+                                        "typeDescriptions": {
+                                            "typeIdentifier": "t_address",
+                                            "typeString": "address"
+                                        }
+                                    },
+                                    "visibility": "internal"
+                                }
+                            ],
+                            "src": "511:139:0"
+                        },
+                        "src": "487:164:0"
+                    },
+                    {
+                        "body": {
+                            "id": 117,
+                            "nodeType": "Block",
+                            "src": "907:1067:0",
+                            "statements": [
+                                {
+                                    "expression": {
+                                        "arguments": [
+                                            {
+                                                "commonType": {
+                                                    "typeIdentifier": "t_uint256",
+                                                    "typeString": "uint256"
+                                                },
+                                                "id": 60,
+                                                "isConstant": false,
+                                                "isLValue": false,
+                                                "isPure": false,
+                                                "lValueRequested": false,
+                                                "leftExpression": {
+                                                    "expression": {
+                                                        "arguments": [
+                                                            {
+                                                                "id": 56,
+                                                                "name": "_medicineName",
+                                                                "nodeType": "Identifier",
+                                                                "overloadedDeclarations": [],
+                                                                "referencedDeclaration": 40,
+                                                                "src": "948:13:0",
+                                                                "typeDescriptions": {
+                                                                    "typeIdentifier": "t_string_memory_ptr",
+                                                                    "typeString": "string memory"
+                                                                }
+                                                            }
+                                                        ],
+                                                        "expression": {
+                                                            "argumentTypes": [
+                                                                {
+                                                                    "typeIdentifier": "t_string_memory_ptr",
+                                                                    "typeString": "string memory"
+                                                                }
+                                                            ],
+                                                            "id": 55,
+                                                            "isConstant": false,
+                                                            "isLValue": false,
+                                                            "isPure": true,
+                                                            "lValueRequested": false,
+                                                            "nodeType": "ElementaryTypeNameExpression",
+                                                            "src": "942:5:0",
+                                                            "typeDescriptions": {
+                                                                "typeIdentifier": "t_type$_t_bytes_storage_ptr_$",
+                                                                "typeString": "type(bytes storage pointer)"
+                                                            },
+                                                            "typeName": {
+                                                                "id": 54,
+                                                                "name": "bytes",
+                                                                "nodeType": "ElementaryTypeName",
+                                                                "src": "942:5:0",
+                                                                "typeDescriptions": {}
+                                                            }
+                                                        },
+                                                        "id": 57,
+                                                        "isConstant": false,
+                                                        "isLValue": false,
+                                                        "isPure": false,
+                                                        "kind": "typeConversion",
+                                                        "lValueRequested": false,
+                                                        "nameLocations": [],
+                                                        "names": [],
+                                                        "nodeType": "FunctionCall",
+                                                        "src": "942:20:0",
+                                                        "tryCall": false,
+                                                        "typeDescriptions": {
+                                                            "typeIdentifier": "t_bytes_memory_ptr",
+                                                            "typeString": "bytes memory"
+                                                        }
+                                                    },
+                                                    "id": 58,
+                                                    "isConstant": false,
+                                                    "isLValue": false,
+                                                    "isPure": false,
+                                                    "lValueRequested": false,
+                                                    "memberLocation": "963:6:0",
+                                                    "memberName": "length",
+                                                    "nodeType": "MemberAccess",
+                                                    "src": "942:27:0",
+                                                    "typeDescriptions": {
+                                                        "typeIdentifier": "t_uint256",
+                                                        "typeString": "uint256"
+                                                    }
+                                                },
+                                                "nodeType": "BinaryOperation",
+                                                "operator": ">",
+                                                "rightExpression": {
+                                                    "hexValue": "30",
+                                                    "id": 59,
+                                                    "isConstant": false,
+                                                    "isLValue": false,
+                                                    "isPure": true,
+                                                    "kind": "number",
+                                                    "lValueRequested": false,
+                                                    "nodeType": "Literal",
+                                                    "src": "972:1:0",
+                                                    "typeDescriptions": {
+                                                        "typeIdentifier": "t_rational_0_by_1",
+                                                        "typeString": "int_const 0"
+                                                    },
+                                                    "value": "0"
+                                                },
+                                                "src": "942:31:0",
+                                                "typeDescriptions": {
+                                                    "typeIdentifier": "t_bool",
+                                                    "typeString": "bool"
+                                                }
+                                            },
+                                            {
+                                                "hexValue": "4d65646963696e65206e616d65207265717569726564",
+                                                "id": 61,
+                                                "isConstant": false,
+                                                "isLValue": false,
+                                                "isPure": true,
+                                                "kind": "string",
+                                                "lValueRequested": false,
+                                                "nodeType": "Literal",
+                                                "src": "988:24:0",
+                                                "typeDescriptions": {
+                                                    "typeIdentifier": "t_stringliteral_7332090356ced96b3f4a69a8e0690c6267c45ef2f1e82dd6d615da501a7f9516",
+                                                    "typeString": "literal_string \"Medicine name required\""
+                                                },
+                                                "value": "Medicine name required"
+                                            }
+                                        ],
+                                        "expression": {
+                                            "argumentTypes": [
+                                                {
+                                                    "typeIdentifier": "t_bool",
+                                                    "typeString": "bool"
+                                                },
+                                                {
+                                                    "typeIdentifier": "t_stringliteral_7332090356ced96b3f4a69a8e0690c6267c45ef2f1e82dd6d615da501a7f9516",
+                                                    "typeString": "literal_string \"Medicine name required\""
+                                                }
+                                            ],
+                                            "id": 53,
+                                            "name": "require",
+                                            "nodeType": "Identifier",
+                                            "overloadedDeclarations": [
+                                                -18,
+                                                -18,
+                                                -18
+                                            ],
+                                            "referencedDeclaration": -18,
+                                            "src": "920:7:0",
+                                            "typeDescriptions": {
+                                                "typeIdentifier": "t_function_require_pure$_t_bool_$_t_string_memory_ptr_$returns$__$",
+                                                "typeString": "function (bool,string memory) pure"
+                                            }
+                                        },
+                                        "id": 62,
+                                        "isConstant": false,
+                                        "isLValue": false,
+                                        "isPure": false,
+                                        "kind": "functionCall",
+                                        "lValueRequested": false,
+                                        "nameLocations": [],
+                                        "names": [],
+                                        "nodeType": "FunctionCall",
+                                        "src": "920:103:0",
+                                        "tryCall": false,
+                                        "typeDescriptions": {
+                                            "typeIdentifier": "t_tuple$__$",
+                                            "typeString": "tuple()"
+                                        }
+                                    },
+                                    "id": 63,
+                                    "nodeType": "ExpressionStatement",
+                                    "src": "920:103:0"
+                                },
+                                {
+                                    "expression": {
+                                        "arguments": [
+                                            {
+                                                "commonType": {
+                                                    "typeIdentifier": "t_uint256",
+                                                    "typeString": "uint256"
+                                                },
+                                                "id": 71,
+                                                "isConstant": false,
+                                                "isLValue": false,
+                                                "isPure": false,
+                                                "lValueRequested": false,
+                                                "leftExpression": {
+                                                    "expression": {
+                                                        "arguments": [
+                                                            {
+                                                                "id": 67,
+                                                                "name": "_batchNumber",
+                                                                "nodeType": "Identifier",
+                                                                "overloadedDeclarations": [],
+                                                                "referencedDeclaration": 42,
+                                                                "src": "1064:12:0",
+                                                                "typeDescriptions": {
+                                                                    "typeIdentifier": "t_string_memory_ptr",
+                                                                    "typeString": "string memory"
+                                                                }
+                                                            }
+                                                        ],
+                                                        "expression": {
+                                                            "argumentTypes": [
+                                                                {
+                                                                    "typeIdentifier": "t_string_memory_ptr",
+                                                                    "typeString": "string memory"
+                                                                }
+                                                            ],
+                                                            "id": 66,
+                                                            "isConstant": false,
+                                                            "isLValue": false,
+                                                            "isPure": true,
+                                                            "lValueRequested": false,
+                                                            "nodeType": "ElementaryTypeNameExpression",
+                                                            "src": "1058:5:0",
+                                                            "typeDescriptions": {
+                                                                "typeIdentifier": "t_type$_t_bytes_storage_ptr_$",
+                                                                "typeString": "type(bytes storage pointer)"
+                                                            },
+                                                            "typeName": {
+                                                                "id": 65,
+                                                                "name": "bytes",
+                                                                "nodeType": "ElementaryTypeName",
+                                                                "src": "1058:5:0",
+                                                                "typeDescriptions": {}
+                                                            }
+                                                        },
+                                                        "id": 68,
+                                                        "isConstant": false,
+                                                        "isLValue": false,
+                                                        "isPure": false,
+                                                        "kind": "typeConversion",
+                                                        "lValueRequested": false,
+                                                        "nameLocations": [],
+                                                        "names": [],
+                                                        "nodeType": "FunctionCall",
+                                                        "src": "1058:19:0",
+                                                        "tryCall": false,
+                                                        "typeDescriptions": {
+                                                            "typeIdentifier": "t_bytes_memory_ptr",
+                                                            "typeString": "bytes memory"
+                                                        }
+                                                    },
+                                                    "id": 69,
+                                                    "isConstant": false,
+                                                    "isLValue": false,
+                                                    "isPure": false,
+                                                    "lValueRequested": false,
+                                                    "memberLocation": "1078:6:0",
+                                                    "memberName": "length",
+                                                    "nodeType": "MemberAccess",
+                                                    "src": "1058:26:0",
+                                                    "typeDescriptions": {
+                                                        "typeIdentifier": "t_uint256",
+                                                        "typeString": "uint256"
+                                                    }
+                                                },
+                                                "nodeType": "BinaryOperation",
+                                                "operator": ">",
+                                                "rightExpression": {
+                                                    "hexValue": "30",
+                                                    "id": 70,
+                                                    "isConstant": false,
+                                                    "isLValue": false,
+                                                    "isPure": true,
+                                                    "kind": "number",
+                                                    "lValueRequested": false,
+                                                    "nodeType": "Literal",
+                                                    "src": "1087:1:0",
+                                                    "typeDescriptions": {
+                                                        "typeIdentifier": "t_rational_0_by_1",
+                                                        "typeString": "int_const 0"
+                                                    },
+                                                    "value": "0"
+                                                },
+                                                "src": "1058:30:0",
+                                                "typeDescriptions": {
+                                                    "typeIdentifier": "t_bool",
+                                                    "typeString": "bool"
+                                                }
+                                            },
+                                            {
+                                                "hexValue": "4261746368206e756d626572207265717569726564",
+                                                "id": 72,
+                                                "isConstant": false,
+                                                "isLValue": false,
+                                                "isPure": true,
+                                                "kind": "string",
+                                                "lValueRequested": false,
+                                                "nodeType": "Literal",
+                                                "src": "1103:23:0",
+                                                "typeDescriptions": {
+                                                    "typeIdentifier": "t_stringliteral_5e553a5500c59b192f9e77267bc8599aae7b1149099cae4008f5580159dff0c9",
+                                                    "typeString": "literal_string \"Batch number required\""
+                                                },
+                                                "value": "Batch number required"
+                                            }
+                                        ],
+                                        "expression": {
+                                            "argumentTypes": [
+                                                {
+                                                    "typeIdentifier": "t_bool",
+                                                    "typeString": "bool"
+                                                },
+                                                {
+                                                    "typeIdentifier": "t_stringliteral_5e553a5500c59b192f9e77267bc8599aae7b1149099cae4008f5580159dff0c9",
+                                                    "typeString": "literal_string \"Batch number required\""
+                                                }
+                                            ],
+                                            "id": 64,
+                                            "name": "require",
+                                            "nodeType": "Identifier",
+                                            "overloadedDeclarations": [
+                                                -18,
+                                                -18,
+                                                -18
+                                            ],
+                                            "referencedDeclaration": -18,
+                                            "src": "1036:7:0",
+                                            "typeDescriptions": {
+                                                "typeIdentifier": "t_function_require_pure$_t_bool_$_t_string_memory_ptr_$returns$__$",
+                                                "typeString": "function (bool,string memory) pure"
+                                            }
+                                        },
+                                        "id": 73,
+                                        "isConstant": false,
+                                        "isLValue": false,
+                                        "isPure": false,
+                                        "kind": "functionCall",
+                                        "lValueRequested": false,
+                                        "nameLocations": [],
+                                        "names": [],
+                                        "nodeType": "FunctionCall",
+                                        "src": "1036:101:0",
+                                        "tryCall": false,
+                                        "typeDescriptions": {
+                                            "typeIdentifier": "t_tuple$__$",
+                                            "typeString": "tuple()"
+                                        }
+                                    },
+                                    "id": 74,
+                                    "nodeType": "ExpressionStatement",
+                                    "src": "1036:101:0"
+                                },
+                                {
+                                    "expression": {
+                                        "arguments": [
+                                            {
+                                                "commonType": {
+                                                    "typeIdentifier": "t_uint256",
+                                                    "typeString": "uint256"
+                                                },
+                                                "id": 78,
+                                                "isConstant": false,
+                                                "isLValue": false,
+                                                "isPure": false,
+                                                "lValueRequested": false,
+                                                "leftExpression": {
+                                                    "id": 76,
+                                                    "name": "_quantity",
+                                                    "nodeType": "Identifier",
+                                                    "overloadedDeclarations": [],
+                                                    "referencedDeclaration": 50,
+                                                    "src": "1172:9:0",
+                                                    "typeDescriptions": {
+                                                        "typeIdentifier": "t_uint256",
+                                                        "typeString": "uint256"
+                                                    }
+                                                },
+                                                "nodeType": "BinaryOperation",
+                                                "operator": ">",
+                                                "rightExpression": {
+                                                    "hexValue": "30",
+                                                    "id": 77,
+                                                    "isConstant": false,
+                                                    "isLValue": false,
+                                                    "isPure": true,
+                                                    "kind": "number",
+                                                    "lValueRequested": false,
+                                                    "nodeType": "Literal",
+                                                    "src": "1184:1:0",
+                                                    "typeDescriptions": {
+                                                        "typeIdentifier": "t_rational_0_by_1",
+                                                        "typeString": "int_const 0"
+                                                    },
+                                                    "value": "0"
+                                                },
+                                                "src": "1172:13:0",
+                                                "typeDescriptions": {
+                                                    "typeIdentifier": "t_bool",
+                                                    "typeString": "bool"
+                                                }
+                                            },
+                                            {
+                                                "hexValue": "5175616e74697479206d7573742062652067726561746572207468616e207a65726f",
+                                                "id": 79,
+                                                "isConstant": false,
+                                                "isLValue": false,
+                                                "isPure": true,
+                                                "kind": "string",
+                                                "lValueRequested": false,
+                                                "nodeType": "Literal",
+                                                "src": "1200:36:0",
+                                                "typeDescriptions": {
+                                                    "typeIdentifier": "t_stringliteral_b09b882ff4253daadcbe7adbae0df55aec94441c34cdc284b1118c0cfaca32c9",
+                                                    "typeString": "literal_string \"Quantity must be greater than zero\""
+                                                },
+                                                "value": "Quantity must be greater than zero"
+                                            }
+                                        ],
+                                        "expression": {
+                                            "argumentTypes": [
+                                                {
+                                                    "typeIdentifier": "t_bool",
+                                                    "typeString": "bool"
+                                                },
+                                                {
+                                                    "typeIdentifier": "t_stringliteral_b09b882ff4253daadcbe7adbae0df55aec94441c34cdc284b1118c0cfaca32c9",
+                                                    "typeString": "literal_string \"Quantity must be greater than zero\""
+                                                }
+                                            ],
+                                            "id": 75,
+                                            "name": "require",
+                                            "nodeType": "Identifier",
+                                            "overloadedDeclarations": [
+                                                -18,
+                                                -18,
+                                                -18
+                                            ],
+                                            "referencedDeclaration": -18,
+                                            "src": "1150:7:0",
+                                            "typeDescriptions": {
+                                                "typeIdentifier": "t_function_require_pure$_t_bool_$_t_string_memory_ptr_$returns$__$",
+                                                "typeString": "function (bool,string memory) pure"
+                                            }
+                                        },
+                                        "id": 80,
+                                        "isConstant": false,
+                                        "isLValue": false,
+                                        "isPure": false,
+                                        "kind": "functionCall",
+                                        "lValueRequested": false,
+                                        "nameLocations": [],
+                                        "names": [],
+                                        "nodeType": "FunctionCall",
+                                        "src": "1150:97:0",
+                                        "tryCall": false,
+                                        "typeDescriptions": {
+                                            "typeIdentifier": "t_tuple$__$",
+                                            "typeString": "tuple()"
+                                        }
+                                    },
+                                    "id": 81,
+                                    "nodeType": "ExpressionStatement",
+                                    "src": "1150:97:0"
+                                },
+                                {
+                                    "expression": {
+                                        "arguments": [
+                                            {
+                                                "commonType": {
+                                                    "typeIdentifier": "t_uint256",
+                                                    "typeString": "uint256"
+                                                },
+                                                "id": 85,
+                                                "isConstant": false,
+                                                "isLValue": false,
+                                                "isPure": false,
+                                                "lValueRequested": false,
+                                                "leftExpression": {
+                                                    "id": 83,
+                                                    "name": "_expiryDate",
+                                                    "nodeType": "Identifier",
+                                                    "overloadedDeclarations": [],
+                                                    "referencedDeclaration": 48,
+                                                    "src": "1282:11:0",
+                                                    "typeDescriptions": {
+                                                        "typeIdentifier": "t_uint256",
+                                                        "typeString": "uint256"
+                                                    }
+                                                },
+                                                "nodeType": "BinaryOperation",
+                                                "operator": ">",
+                                                "rightExpression": {
+                                                    "id": 84,
+                                                    "name": "_manufacturingDate",
+                                                    "nodeType": "Identifier",
+                                                    "overloadedDeclarations": [],
+                                                    "referencedDeclaration": 46,
+                                                    "src": "1296:18:0",
+                                                    "typeDescriptions": {
+                                                        "typeIdentifier": "t_uint256",
+                                                        "typeString": "uint256"
+                                                    }
+                                                },
+                                                "src": "1282:32:0",
+                                                "typeDescriptions": {
+                                                    "typeIdentifier": "t_bool",
+                                                    "typeString": "bool"
+                                                }
+                                            },
+                                            {
+                                                "hexValue": "457870697279206d757374206265206166746572206d616e75666163747572696e672064617465",
+                                                "id": 86,
+                                                "isConstant": false,
+                                                "isLValue": false,
+                                                "isPure": true,
+                                                "kind": "string",
+                                                "lValueRequested": false,
+                                                "nodeType": "Literal",
+                                                "src": "1329:41:0",
+                                                "typeDescriptions": {
+                                                    "typeIdentifier": "t_stringliteral_b6fd2bae917f29e40e3fc9f332abd4a6f98031df7643f04d60063fac2d76941f",
+                                                    "typeString": "literal_string \"Expiry must be after manufacturing date\""
+                                                },
+                                                "value": "Expiry must be after manufacturing date"
+                                            }
+                                        ],
+                                        "expression": {
+                                            "argumentTypes": [
+                                                {
+                                                    "typeIdentifier": "t_bool",
+                                                    "typeString": "bool"
+                                                },
+                                                {
+                                                    "typeIdentifier": "t_stringliteral_b6fd2bae917f29e40e3fc9f332abd4a6f98031df7643f04d60063fac2d76941f",
+                                                    "typeString": "literal_string \"Expiry must be after manufacturing date\""
+                                                }
+                                            ],
+                                            "id": 82,
+                                            "name": "require",
+                                            "nodeType": "Identifier",
+                                            "overloadedDeclarations": [
+                                                -18,
+                                                -18,
+                                                -18
+                                            ],
+                                            "referencedDeclaration": -18,
+                                            "src": "1260:7:0",
+                                            "typeDescriptions": {
+                                                "typeIdentifier": "t_function_require_pure$_t_bool_$_t_string_memory_ptr_$returns$__$",
+                                                "typeString": "function (bool,string memory) pure"
+                                            }
+                                        },
+                                        "id": 87,
+                                        "isConstant": false,
+                                        "isLValue": false,
+                                        "isPure": false,
+                                        "kind": "functionCall",
+                                        "lValueRequested": false,
+                                        "nameLocations": [],
+                                        "names": [],
+                                        "nodeType": "FunctionCall",
+                                        "src": "1260:121:0",
+                                        "tryCall": false,
+                                        "typeDescriptions": {
+                                            "typeIdentifier": "t_tuple$__$",
+                                            "typeString": "tuple()"
+                                        }
+                                    },
+                                    "id": 88,
+                                    "nodeType": "ExpressionStatement",
+                                    "src": "1260:121:0"
+                                },
+                                {
+                                    "expression": {
+                                        "id": 104,
+                                        "isConstant": false,
+                                        "isLValue": false,
+                                        "isPure": false,
+                                        "lValueRequested": false,
+                                        "leftHandSide": {
+                                            "baseExpression": {
+                                                "id": 89,
+                                                "name": "batches",
+                                                "nodeType": "Identifier",
+                                                "overloadedDeclarations": [],
+                                                "referencedDeclaration": 28,
+                                                "src": "1394:7:0",
+                                                "typeDescriptions": {
+                                                    "typeIdentifier": "t_mapping$_t_uint256_$_t_struct$_MedicineBatch_$20_storage_$",
+                                                    "typeString": "mapping(uint256 => struct PharmaSupplyChain.MedicineBatch storage ref)"
+                                                }
+                                            },
+                                            "id": 91,
+                                            "indexExpression": {
+                                                "id": 90,
+                                                "name": "nextBatchId",
+                                                "nodeType": "Identifier",
+                                                "overloadedDeclarations": [],
+                                                "referencedDeclaration": 23,
+                                                "src": "1402:11:0",
+                                                "typeDescriptions": {
+                                                    "typeIdentifier": "t_uint256",
+                                                    "typeString": "uint256"
+                                                }
+                                            },
+                                            "isConstant": false,
+                                            "isLValue": true,
+                                            "isPure": false,
+                                            "lValueRequested": true,
+                                            "nodeType": "IndexAccess",
+                                            "src": "1394:20:0",
+                                            "typeDescriptions": {
+                                                "typeIdentifier": "t_struct$_MedicineBatch_$20_storage",
+                                                "typeString": "struct PharmaSupplyChain.MedicineBatch storage ref"
+                                            }
+                                        },
+                                        "nodeType": "Assignment",
+                                        "operator": "=",
+                                        "rightHandSide": {
+                                            "arguments": [
+                                                {
+                                                    "id": 93,
+                                                    "name": "nextBatchId",
+                                                    "nodeType": "Identifier",
+                                                    "overloadedDeclarations": [],
+                                                    "referencedDeclaration": 23,
+                                                    "src": "1450:11:0",
+                                                    "typeDescriptions": {
+                                                        "typeIdentifier": "t_uint256",
+                                                        "typeString": "uint256"
+                                                    }
+                                                },
+                                                {
+                                                    "id": 94,
+                                                    "name": "_medicineName",
+                                                    "nodeType": "Identifier",
+                                                    "overloadedDeclarations": [],
+                                                    "referencedDeclaration": 40,
+                                                    "src": "1490:13:0",
+                                                    "typeDescriptions": {
+                                                        "typeIdentifier": "t_string_memory_ptr",
+                                                        "typeString": "string memory"
+                                                    }
+                                                },
+                                                {
+                                                    "id": 95,
+                                                    "name": "_batchNumber",
+                                                    "nodeType": "Identifier",
+                                                    "overloadedDeclarations": [],
+                                                    "referencedDeclaration": 42,
+                                                    "src": "1531:12:0",
+                                                    "typeDescriptions": {
+                                                        "typeIdentifier": "t_string_memory_ptr",
+                                                        "typeString": "string memory"
+                                                    }
+                                                },
+                                                {
+                                                    "id": 96,
+                                                    "name": "_manufacturer",
+                                                    "nodeType": "Identifier",
+                                                    "overloadedDeclarations": [],
+                                                    "referencedDeclaration": 44,
+                                                    "src": "1572:13:0",
+                                                    "typeDescriptions": {
+                                                        "typeIdentifier": "t_string_memory_ptr",
+                                                        "typeString": "string memory"
+                                                    }
+                                                },
+                                                {
+                                                    "id": 97,
+                                                    "name": "_manufacturingDate",
+                                                    "nodeType": "Identifier",
+                                                    "overloadedDeclarations": [],
+                                                    "referencedDeclaration": 46,
+                                                    "src": "1619:18:0",
+                                                    "typeDescriptions": {
+                                                        "typeIdentifier": "t_uint256",
+                                                        "typeString": "uint256"
+                                                    }
+                                                },
+                                                {
+                                                    "id": 98,
+                                                    "name": "_expiryDate",
+                                                    "nodeType": "Identifier",
+                                                    "overloadedDeclarations": [],
+                                                    "referencedDeclaration": 48,
+                                                    "src": "1664:11:0",
+                                                    "typeDescriptions": {
+                                                        "typeIdentifier": "t_uint256",
+                                                        "typeString": "uint256"
+                                                    }
+                                                },
+                                                {
+                                                    "id": 99,
+                                                    "name": "_quantity",
+                                                    "nodeType": "Identifier",
+                                                    "overloadedDeclarations": [],
+                                                    "referencedDeclaration": 50,
+                                                    "src": "1700:9:0",
+                                                    "typeDescriptions": {
+                                                        "typeIdentifier": "t_uint256",
+                                                        "typeString": "uint256"
+                                                    }
+                                                },
+                                                {
+                                                    "expression": {
+                                                        "id": 100,
+                                                        "name": "msg",
+                                                        "nodeType": "Identifier",
+                                                        "overloadedDeclarations": [],
+                                                        "referencedDeclaration": -15,
+                                                        "src": "1738:3:0",
+                                                        "typeDescriptions": {
+                                                            "typeIdentifier": "t_magic_message",
+                                                            "typeString": "msg"
+                                                        }
+                                                    },
+                                                    "id": 101,
+                                                    "isConstant": false,
+                                                    "isLValue": false,
+                                                    "isPure": false,
+                                                    "lValueRequested": false,
+                                                    "memberLocation": "1742:6:0",
+                                                    "memberName": "sender",
+                                                    "nodeType": "MemberAccess",
+                                                    "src": "1738:10:0",
+                                                    "typeDescriptions": {
+                                                        "typeIdentifier": "t_address",
+                                                        "typeString": "address"
+                                                    }
+                                                },
+                                                {
+                                                    "hexValue": "74727565",
+                                                    "id": 102,
+                                                    "isConstant": false,
+                                                    "isLValue": false,
+                                                    "isPure": true,
+                                                    "kind": "bool",
+                                                    "lValueRequested": false,
+                                                    "nodeType": "Literal",
+                                                    "src": "1771:4:0",
+                                                    "typeDescriptions": {
+                                                        "typeIdentifier": "t_bool",
+                                                        "typeString": "bool"
+                                                    },
+                                                    "value": "true"
+                                                }
+                                            ],
+                                            "expression": {
+                                                "argumentTypes": [
+                                                    {
+                                                        "typeIdentifier": "t_uint256",
+                                                        "typeString": "uint256"
+                                                    },
+                                                    {
+                                                        "typeIdentifier": "t_string_memory_ptr",
+                                                        "typeString": "string memory"
+                                                    },
+                                                    {
+                                                        "typeIdentifier": "t_string_memory_ptr",
+                                                        "typeString": "string memory"
+                                                    },
+                                                    {
+                                                        "typeIdentifier": "t_string_memory_ptr",
+                                                        "typeString": "string memory"
+                                                    },
+                                                    {
+                                                        "typeIdentifier": "t_uint256",
+                                                        "typeString": "uint256"
+                                                    },
+                                                    {
+                                                        "typeIdentifier": "t_uint256",
+                                                        "typeString": "uint256"
+                                                    },
+                                                    {
+                                                        "typeIdentifier": "t_uint256",
+                                                        "typeString": "uint256"
+                                                    },
+                                                    {
+                                                        "typeIdentifier": "t_address",
+                                                        "typeString": "address"
+                                                    },
+                                                    {
+                                                        "typeIdentifier": "t_bool",
+                                                        "typeString": "bool"
+                                                    }
+                                                ],
+                                                "id": 92,
+                                                "name": "MedicineBatch",
+                                                "nodeType": "Identifier",
+                                                "overloadedDeclarations": [],
+                                                "referencedDeclaration": 20,
+                                                "src": "1417:13:0",
+                                                "typeDescriptions": {
+                                                    "typeIdentifier": "t_type$_t_struct$_MedicineBatch_$20_storage_ptr_$",
+                                                    "typeString": "type(struct PharmaSupplyChain.MedicineBatch storage pointer)"
+                                                }
+                                            },
+                                            "id": 103,
+                                            "isConstant": false,
+                                            "isLValue": false,
+                                            "isPure": false,
+                                            "kind": "structConstructorCall",
+                                            "lValueRequested": false,
+                                            "nameLocations": [
+                                                "1446:2:0",
+                                                "1476:12:0",
+                                                "1518:11:0",
+                                                "1558:12:0",
+                                                "1600:17:0",
+                                                "1652:10:0",
+                                                "1690:8:0",
+                                                "1724:12:0",
+                                                "1763:6:0"
+                                            ],
+                                            "names": [
+                                                "id",
+                                                "medicineName",
+                                                "batchNumber",
+                                                "manufacturer",
+                                                "manufacturingDate",
+                                                "expiryDate",
+                                                "quantity",
+                                                "currentOwner",
+                                                "exists"
+                                            ],
+                                            "nodeType": "FunctionCall",
+                                            "src": "1417:370:0",
+                                            "tryCall": false,
+                                            "typeDescriptions": {
+                                                "typeIdentifier": "t_struct$_MedicineBatch_$20_memory_ptr",
+                                                "typeString": "struct PharmaSupplyChain.MedicineBatch memory"
+                                            }
+                                        },
+                                        "src": "1394:393:0",
+                                        "typeDescriptions": {
+                                            "typeIdentifier": "t_struct$_MedicineBatch_$20_storage",
+                                            "typeString": "struct PharmaSupplyChain.MedicineBatch storage ref"
+                                        }
+                                    },
+                                    "id": 105,
+                                    "nodeType": "ExpressionStatement",
+                                    "src": "1394:393:0"
+                                },
+                                {
+                                    "eventCall": {
+                                        "arguments": [
+                                            {
+                                                "id": 107,
+                                                "name": "nextBatchId",
+                                                "nodeType": "Identifier",
+                                                "overloadedDeclarations": [],
+                                                "referencedDeclaration": 23,
+                                                "src": "1838:11:0",
+                                                "typeDescriptions": {
+                                                    "typeIdentifier": "t_uint256",
+                                                    "typeString": "uint256"
+                                                }
+                                            },
+                                            {
+                                                "id": 108,
+                                                "name": "_medicineName",
+                                                "nodeType": "Identifier",
+                                                "overloadedDeclarations": [],
+                                                "referencedDeclaration": 40,
+                                                "src": "1864:13:0",
+                                                "typeDescriptions": {
+                                                    "typeIdentifier": "t_string_memory_ptr",
+                                                    "typeString": "string memory"
+                                                }
+                                            },
+                                            {
+                                                "id": 109,
+                                                "name": "_batchNumber",
+                                                "nodeType": "Identifier",
+                                                "overloadedDeclarations": [],
+                                                "referencedDeclaration": 42,
+                                                "src": "1892:12:0",
+                                                "typeDescriptions": {
+                                                    "typeIdentifier": "t_string_memory_ptr",
+                                                    "typeString": "string memory"
+                                                }
+                                            },
+                                            {
+                                                "expression": {
+                                                    "id": 110,
+                                                    "name": "msg",
+                                                    "nodeType": "Identifier",
+                                                    "overloadedDeclarations": [],
+                                                    "referencedDeclaration": -15,
+                                                    "src": "1919:3:0",
+                                                    "typeDescriptions": {
+                                                        "typeIdentifier": "t_magic_message",
+                                                        "typeString": "msg"
+                                                    }
+                                                },
+                                                "id": 111,
+                                                "isConstant": false,
+                                                "isLValue": false,
+                                                "isPure": false,
+                                                "lValueRequested": false,
+                                                "memberLocation": "1923:6:0",
+                                                "memberName": "sender",
+                                                "nodeType": "MemberAccess",
+                                                "src": "1919:10:0",
+                                                "typeDescriptions": {
+                                                    "typeIdentifier": "t_address",
+                                                    "typeString": "address"
+                                                }
+                                            }
+                                        ],
+                                        "expression": {
+                                            "argumentTypes": [
+                                                {
+                                                    "typeIdentifier": "t_uint256",
+                                                    "typeString": "uint256"
+                                                },
+                                                {
+                                                    "typeIdentifier": "t_string_memory_ptr",
+                                                    "typeString": "string memory"
+                                                },
+                                                {
+                                                    "typeIdentifier": "t_string_memory_ptr",
+                                                    "typeString": "string memory"
+                                                },
+                                                {
+                                                    "typeIdentifier": "t_address",
+                                                    "typeString": "address"
+                                                }
+                                            ],
+                                            "id": 106,
+                                            "name": "MedicineRegistered",
+                                            "nodeType": "Identifier",
+                                            "overloadedDeclarations": [],
+                                            "referencedDeclaration": 38,
+                                            "src": "1805:18:0",
+                                            "typeDescriptions": {
+                                                "typeIdentifier": "t_function_event_nonpayable$_t_uint256_$_t_string_memory_ptr_$_t_string_memory_ptr_$_t_address_$returns$__$",
+                                                "typeString": "function (uint256,string memory,string memory,address)"
+                                            }
+                                        },
+                                        "id": 112,
+                                        "isConstant": false,
+                                        "isLValue": false,
+                                        "isPure": false,
+                                        "kind": "functionCall",
+                                        "lValueRequested": false,
+                                        "nameLocations": [],
+                                        "names": [],
+                                        "nodeType": "FunctionCall",
+                                        "src": "1805:135:0",
+                                        "tryCall": false,
+                                        "typeDescriptions": {
+                                            "typeIdentifier": "t_tuple$__$",
+                                            "typeString": "tuple()"
+                                        }
+                                    },
+                                    "id": 113,
+                                    "nodeType": "EmitStatement",
+                                    "src": "1800:140:0"
+                                },
+                                {
+                                    "expression": {
+                                        "id": 115,
+                                        "isConstant": false,
+                                        "isLValue": false,
+                                        "isPure": false,
+                                        "lValueRequested": false,
+                                        "nodeType": "UnaryOperation",
+                                        "operator": "++",
+                                        "prefix": false,
+                                        "src": "1953:13:0",
+                                        "subExpression": {
+                                            "id": 114,
+                                            "name": "nextBatchId",
+                                            "nodeType": "Identifier",
+                                            "overloadedDeclarations": [],
+                                            "referencedDeclaration": 23,
+                                            "src": "1953:11:0",
+                                            "typeDescriptions": {
+                                                "typeIdentifier": "t_uint256",
+                                                "typeString": "uint256"
+                                            }
+                                        },
+                                        "typeDescriptions": {
+                                            "typeIdentifier": "t_uint256",
+                                            "typeString": "uint256"
+                                        }
+                                    },
+                                    "id": 116,
+                                    "nodeType": "ExpressionStatement",
+                                    "src": "1953:13:0"
+                                }
+                            ]
+                        },
+                        "functionSelector": "046a5a0b",
+                        "id": 118,
+                        "implemented": true,
+                        "kind": "function",
+                        "modifiers": [],
+                        "name": "registerMedicine",
+                        "nameLocation": "668:16:0",
+                        "nodeType": "FunctionDefinition",
+                        "parameters": {
+                            "id": 51,
+                            "nodeType": "ParameterList",
+                            "parameters": [
+                                {
+                                    "constant": false,
+                                    "id": 40,
+                                    "mutability": "mutable",
+                                    "name": "_medicineName",
+                                    "nameLocation": "709:13:0",
+                                    "nodeType": "VariableDeclaration",
+                                    "scope": 118,
+                                    "src": "695:27:0",
+                                    "stateVariable": false,
+                                    "storageLocation": "memory",
+                                    "typeDescriptions": {
+                                        "typeIdentifier": "t_string_memory_ptr",
+                                        "typeString": "string"
+                                    },
+                                    "typeName": {
+                                        "id": 39,
+                                        "name": "string",
+                                        "nodeType": "ElementaryTypeName",
+                                        "src": "695:6:0",
+                                        "typeDescriptions": {
+                                            "typeIdentifier": "t_string_storage_ptr",
+                                            "typeString": "string"
+                                        }
+                                    },
+                                    "visibility": "internal"
+                                },
+                                {
+                                    "constant": false,
+                                    "id": 42,
+                                    "mutability": "mutable",
+                                    "name": "_batchNumber",
+                                    "nameLocation": "747:12:0",
+                                    "nodeType": "VariableDeclaration",
+                                    "scope": 118,
+                                    "src": "733:26:0",
+                                    "stateVariable": false,
+                                    "storageLocation": "memory",
+                                    "typeDescriptions": {
+                                        "typeIdentifier": "t_string_memory_ptr",
+                                        "typeString": "string"
+                                    },
+                                    "typeName": {
+                                        "id": 41,
+                                        "name": "string",
+                                        "nodeType": "ElementaryTypeName",
+                                        "src": "733:6:0",
+                                        "typeDescriptions": {
+                                            "typeIdentifier": "t_string_storage_ptr",
+                                            "typeString": "string"
+                                        }
+                                    },
+                                    "visibility": "internal"
+                                },
+                                {
+                                    "constant": false,
+                                    "id": 44,
+                                    "mutability": "mutable",
+                                    "name": "_manufacturer",
+                                    "nameLocation": "784:13:0",
+                                    "nodeType": "VariableDeclaration",
+                                    "scope": 118,
+                                    "src": "770:27:0",
+                                    "stateVariable": false,
+                                    "storageLocation": "memory",
+                                    "typeDescriptions": {
+                                        "typeIdentifier": "t_string_memory_ptr",
+                                        "typeString": "string"
+                                    },
+                                    "typeName": {
+                                        "id": 43,
+                                        "name": "string",
+                                        "nodeType": "ElementaryTypeName",
+                                        "src": "770:6:0",
+                                        "typeDescriptions": {
+                                            "typeIdentifier": "t_string_storage_ptr",
+                                            "typeString": "string"
+                                        }
+                                    },
+                                    "visibility": "internal"
+                                },
+                                {
+                                    "constant": false,
+                                    "id": 46,
+                                    "mutability": "mutable",
+                                    "name": "_manufacturingDate",
+                                    "nameLocation": "816:18:0",
+                                    "nodeType": "VariableDeclaration",
+                                    "scope": 118,
+                                    "src": "808:26:0",
+                                    "stateVariable": false,
+                                    "storageLocation": "default",
+                                    "typeDescriptions": {
+                                        "typeIdentifier": "t_uint256",
+                                        "typeString": "uint256"
+                                    },
+                                    "typeName": {
+                                        "id": 45,
+                                        "name": "uint256",
+                                        "nodeType": "ElementaryTypeName",
+                                        "src": "808:7:0",
+                                        "typeDescriptions": {
+                                            "typeIdentifier": "t_uint256",
+                                            "typeString": "uint256"
+                                        }
+                                    },
+                                    "visibility": "internal"
+                                },
+                                {
+                                    "constant": false,
+                                    "id": 48,
+                                    "mutability": "mutable",
+                                    "name": "_expiryDate",
+                                    "nameLocation": "853:11:0",
+                                    "nodeType": "VariableDeclaration",
+                                    "scope": 118,
+                                    "src": "845:19:0",
+                                    "stateVariable": false,
+                                    "storageLocation": "default",
+                                    "typeDescriptions": {
+                                        "typeIdentifier": "t_uint256",
+                                        "typeString": "uint256"
+                                    },
+                                    "typeName": {
+                                        "id": 47,
+                                        "name": "uint256",
+                                        "nodeType": "ElementaryTypeName",
+                                        "src": "845:7:0",
+                                        "typeDescriptions": {
+                                            "typeIdentifier": "t_uint256",
+                                            "typeString": "uint256"
+                                        }
+                                    },
+                                    "visibility": "internal"
+                                },
+                                {
+                                    "constant": false,
+                                    "id": 50,
+                                    "mutability": "mutable",
+                                    "name": "_quantity",
+                                    "nameLocation": "883:9:0",
+                                    "nodeType": "VariableDeclaration",
+                                    "scope": 118,
+                                    "src": "875:17:0",
+                                    "stateVariable": false,
+                                    "storageLocation": "default",
+                                    "typeDescriptions": {
+                                        "typeIdentifier": "t_uint256",
+                                        "typeString": "uint256"
+                                    },
+                                    "typeName": {
+                                        "id": 49,
+                                        "name": "uint256",
+                                        "nodeType": "ElementaryTypeName",
+                                        "src": "875:7:0",
+                                        "typeDescriptions": {
+                                            "typeIdentifier": "t_uint256",
+                                            "typeString": "uint256"
+                                        }
+                                    },
+                                    "visibility": "internal"
+                                }
+                            ],
+                            "src": "684:215:0"
+                        },
+                        "returnParameters": {
+                            "id": 52,
+                            "nodeType": "ParameterList",
+                            "parameters": [],
+                            "src": "907:0:0"
+                        },
+                        "scope": 150,
+                        "src": "659:1315:0",
+                        "stateMutability": "nonpayable",
+                        "virtual": false,
+                        "visibility": "public"
+                    },
+                    {
+                        "body": {
+                            "id": 138,
+                            "nodeType": "Block",
+                            "src": "2112:159:0",
+                            "statements": [
+                                {
+                                    "expression": {
+                                        "arguments": [
+                                            {
+                                                "expression": {
+                                                    "baseExpression": {
+                                                        "id": 127,
+                                                        "name": "batches",
+                                                        "nodeType": "Identifier",
+                                                        "overloadedDeclarations": [],
+                                                        "referencedDeclaration": 28,
+                                                        "src": "2145:7:0",
+                                                        "typeDescriptions": {
+                                                            "typeIdentifier": "t_mapping$_t_uint256_$_t_struct$_MedicineBatch_$20_storage_$",
+                                                            "typeString": "mapping(uint256 => struct PharmaSupplyChain.MedicineBatch storage ref)"
+                                                        }
+                                                    },
+                                                    "id": 129,
+                                                    "indexExpression": {
+                                                        "id": 128,
+                                                        "name": "_batchId",
+                                                        "nodeType": "Identifier",
+                                                        "overloadedDeclarations": [],
+                                                        "referencedDeclaration": 120,
+                                                        "src": "2153:8:0",
+                                                        "typeDescriptions": {
+                                                            "typeIdentifier": "t_uint256",
+                                                            "typeString": "uint256"
+                                                        }
+                                                    },
+                                                    "isConstant": false,
+                                                    "isLValue": true,
+                                                    "isPure": false,
+                                                    "lValueRequested": false,
+                                                    "nodeType": "IndexAccess",
+                                                    "src": "2145:17:0",
+                                                    "typeDescriptions": {
+                                                        "typeIdentifier": "t_struct$_MedicineBatch_$20_storage",
+                                                        "typeString": "struct PharmaSupplyChain.MedicineBatch storage ref"
+                                                    }
+                                                },
+                                                "id": 130,
+                                                "isConstant": false,
+                                                "isLValue": true,
+                                                "isPure": false,
+                                                "lValueRequested": false,
+                                                "memberLocation": "2163:6:0",
+                                                "memberName": "exists",
+                                                "nodeType": "MemberAccess",
+                                                "referencedDeclaration": 19,
+                                                "src": "2145:24:0",
+                                                "typeDescriptions": {
+                                                    "typeIdentifier": "t_bool",
+                                                    "typeString": "bool"
+                                                }
+                                            },
+                                            {
+                                                "hexValue": "4d65646963696e6520626174636820646f6573206e6f74206578697374",
+                                                "id": 131,
+                                                "isConstant": false,
+                                                "isLValue": false,
+                                                "isPure": true,
+                                                "kind": "string",
+                                                "lValueRequested": false,
+                                                "nodeType": "Literal",
+                                                "src": "2184:31:0",
+                                                "typeDescriptions": {
+                                                    "typeIdentifier": "t_stringliteral_9ce714d240c475a13a4066e12492825620889ac6f8e4d15481a830681bdd32f0",
+                                                    "typeString": "literal_string \"Medicine batch does not exist\""
+                                                },
+                                                "value": "Medicine batch does not exist"
+                                            }
+                                        ],
+                                        "expression": {
+                                            "argumentTypes": [
+                                                {
+                                                    "typeIdentifier": "t_bool",
+                                                    "typeString": "bool"
+                                                },
+                                                {
+                                                    "typeIdentifier": "t_stringliteral_9ce714d240c475a13a4066e12492825620889ac6f8e4d15481a830681bdd32f0",
+                                                    "typeString": "literal_string \"Medicine batch does not exist\""
+                                                }
+                                            ],
+                                            "id": 126,
+                                            "name": "require",
+                                            "nodeType": "Identifier",
+                                            "overloadedDeclarations": [
+                                                -18,
+                                                -18,
+                                                -18
+                                            ],
+                                            "referencedDeclaration": -18,
+                                            "src": "2123:7:0",
+                                            "typeDescriptions": {
+                                                "typeIdentifier": "t_function_require_pure$_t_bool_$_t_string_memory_ptr_$returns$__$",
+                                                "typeString": "function (bool,string memory) pure"
+                                            }
+                                        },
+                                        "id": 132,
+                                        "isConstant": false,
+                                        "isLValue": false,
+                                        "isPure": false,
+                                        "kind": "functionCall",
+                                        "lValueRequested": false,
+                                        "nameLocations": [],
+                                        "names": [],
+                                        "nodeType": "FunctionCall",
+                                        "src": "2123:103:0",
+                                        "tryCall": false,
+                                        "typeDescriptions": {
+                                            "typeIdentifier": "t_tuple$__$",
+                                            "typeString": "tuple()"
+                                        }
+                                    },
+                                    "id": 133,
+                                    "nodeType": "ExpressionStatement",
+                                    "src": "2123:103:0"
+                                },
+                                {
+                                    "expression": {
+                                        "baseExpression": {
+                                            "id": 134,
+                                            "name": "batches",
+                                            "nodeType": "Identifier",
+                                            "overloadedDeclarations": [],
+                                            "referencedDeclaration": 28,
+                                            "src": "2246:7:0",
+                                            "typeDescriptions": {
+                                                "typeIdentifier": "t_mapping$_t_uint256_$_t_struct$_MedicineBatch_$20_storage_$",
+                                                "typeString": "mapping(uint256 => struct PharmaSupplyChain.MedicineBatch storage ref)"
+                                            }
+                                        },
+                                        "id": 136,
+                                        "indexExpression": {
+                                            "id": 135,
+                                            "name": "_batchId",
+                                            "nodeType": "Identifier",
+                                            "overloadedDeclarations": [],
+                                            "referencedDeclaration": 120,
+                                            "src": "2254:8:0",
+                                            "typeDescriptions": {
+                                                "typeIdentifier": "t_uint256",
+                                                "typeString": "uint256"
+                                            }
+                                        },
+                                        "isConstant": false,
+                                        "isLValue": true,
+                                        "isPure": false,
+                                        "lValueRequested": false,
+                                        "nodeType": "IndexAccess",
+                                        "src": "2246:17:0",
+                                        "typeDescriptions": {
+                                            "typeIdentifier": "t_struct$_MedicineBatch_$20_storage",
+                                            "typeString": "struct PharmaSupplyChain.MedicineBatch storage ref"
+                                        }
+                                    },
+                                    "functionReturnParameters": 125,
+                                    "id": 137,
+                                    "nodeType": "Return",
+                                    "src": "2239:24:0"
+                                }
+                            ]
+                        },
+                        "functionSelector": "a6742265",
+                        "id": 139,
+                        "implemented": true,
+                        "kind": "function",
+                        "modifiers": [],
+                        "name": "getMedicine",
+                        "nameLocation": "1991:11:0",
+                        "nodeType": "FunctionDefinition",
+                        "parameters": {
+                            "id": 121,
+                            "nodeType": "ParameterList",
+                            "parameters": [
+                                {
+                                    "constant": false,
+                                    "id": 120,
+                                    "mutability": "mutable",
+                                    "name": "_batchId",
+                                    "nameLocation": "2021:8:0",
+                                    "nodeType": "VariableDeclaration",
+                                    "scope": 139,
+                                    "src": "2013:16:0",
+                                    "stateVariable": false,
+                                    "storageLocation": "default",
+                                    "typeDescriptions": {
+                                        "typeIdentifier": "t_uint256",
+                                        "typeString": "uint256"
+                                    },
+                                    "typeName": {
+                                        "id": 119,
+                                        "name": "uint256",
+                                        "nodeType": "ElementaryTypeName",
+                                        "src": "2013:7:0",
+                                        "typeDescriptions": {
+                                            "typeIdentifier": "t_uint256",
+                                            "typeString": "uint256"
+                                        }
+                                    },
+                                    "visibility": "internal"
+                                }
+                            ],
+                            "src": "2002:34:0"
+                        },
+                        "returnParameters": {
+                            "id": 125,
+                            "nodeType": "ParameterList",
+                            "parameters": [
+                                {
+                                    "constant": false,
+                                    "id": 124,
+                                    "mutability": "mutable",
+                                    "name": "",
+                                    "nameLocation": "-1:-1:-1",
+                                    "nodeType": "VariableDeclaration",
+                                    "scope": 139,
+                                    "src": "2085:20:0",
+                                    "stateVariable": false,
+                                    "storageLocation": "memory",
+                                    "typeDescriptions": {
+                                        "typeIdentifier": "t_struct$_MedicineBatch_$20_memory_ptr",
+                                        "typeString": "struct PharmaSupplyChain.MedicineBatch"
+                                    },
+                                    "typeName": {
+                                        "id": 123,
+                                        "nodeType": "UserDefinedTypeName",
+                                        "pathNode": {
+                                            "id": 122,
+                                            "name": "MedicineBatch",
+                                            "nameLocations": [
+                                                "2085:13:0"
+                                            ],
+                                            "nodeType": "IdentifierPath",
+                                            "referencedDeclaration": 20,
+                                            "src": "2085:13:0"
+                                        },
+                                        "referencedDeclaration": 20,
+                                        "src": "2085:13:0",
+                                        "typeDescriptions": {
+                                            "typeIdentifier": "t_struct$_MedicineBatch_$20_storage_ptr",
+                                            "typeString": "struct PharmaSupplyChain.MedicineBatch"
+                                        }
+                                    },
+                                    "visibility": "internal"
+                                }
+                            ],
+                            "src": "2084:22:0"
+                        },
+                        "scope": 150,
+                        "src": "1982:289:0",
+                        "stateMutability": "view",
+                        "virtual": false,
+                        "visibility": "public"
+                    },
+                    {
+                        "body": {
+                            "id": 148,
+                            "nodeType": "Block",
+                            "src": "2368:41:0",
+                            "statements": [
+                                {
+                                    "expression": {
+                                        "commonType": {
+                                            "typeIdentifier": "t_uint256",
+                                            "typeString": "uint256"
+                                        },
+                                        "id": 146,
+                                        "isConstant": false,
+                                        "isLValue": false,
+                                        "isPure": false,
+                                        "lValueRequested": false,
+                                        "leftExpression": {
+                                            "id": 144,
+                                            "name": "nextBatchId",
+                                            "nodeType": "Identifier",
+                                            "overloadedDeclarations": [],
+                                            "referencedDeclaration": 23,
+                                            "src": "2386:11:0",
+                                            "typeDescriptions": {
+                                                "typeIdentifier": "t_uint256",
+                                                "typeString": "uint256"
+                                            }
+                                        },
+                                        "nodeType": "BinaryOperation",
+                                        "operator": "-",
+                                        "rightExpression": {
+                                            "hexValue": "31",
+                                            "id": 145,
+                                            "isConstant": false,
+                                            "isLValue": false,
+                                            "isPure": true,
+                                            "kind": "number",
+                                            "lValueRequested": false,
+                                            "nodeType": "Literal",
+                                            "src": "2400:1:0",
+                                            "typeDescriptions": {
+                                                "typeIdentifier": "t_rational_1_by_1",
+                                                "typeString": "int_const 1"
+                                            },
+                                            "value": "1"
+                                        },
+                                        "src": "2386:15:0",
+                                        "typeDescriptions": {
+                                            "typeIdentifier": "t_uint256",
+                                            "typeString": "uint256"
+                                        }
+                                    },
+                                    "functionReturnParameters": 143,
+                                    "id": 147,
+                                    "nodeType": "Return",
+                                    "src": "2379:22:0"
+                                }
+                            ]
+                        },
+                        "functionSelector": "e561dddc",
+                        "id": 149,
+                        "implemented": true,
+                        "kind": "function",
+                        "modifiers": [],
+                        "name": "getTotalBatches",
+                        "nameLocation": "2288:15:0",
+                        "nodeType": "FunctionDefinition",
+                        "parameters": {
+                            "id": 140,
+                            "nodeType": "ParameterList",
+                            "parameters": [],
+                            "src": "2303:2:0"
+                        },
+                        "returnParameters": {
+                            "id": 143,
+                            "nodeType": "ParameterList",
+                            "parameters": [
+                                {
+                                    "constant": false,
+                                    "id": 142,
+                                    "mutability": "mutable",
+                                    "name": "",
+                                    "nameLocation": "-1:-1:-1",
+                                    "nodeType": "VariableDeclaration",
+                                    "scope": 149,
+                                    "src": "2354:7:0",
+                                    "stateVariable": false,
+                                    "storageLocation": "default",
+                                    "typeDescriptions": {
+                                        "typeIdentifier": "t_uint256",
+                                        "typeString": "uint256"
+                                    },
+                                    "typeName": {
+                                        "id": 141,
+                                        "name": "uint256",
+                                        "nodeType": "ElementaryTypeName",
+                                        "src": "2354:7:0",
+                                        "typeDescriptions": {
+                                            "typeIdentifier": "t_uint256",
+                                            "typeString": "uint256"
+                                        }
+                                    },
+                                    "visibility": "internal"
+                                }
+                            ],
+                            "src": "2353:9:0"
+                        },
+                        "scope": 150,
+                        "src": "2279:130:0",
+                        "stateMutability": "view",
+                        "virtual": false,
+                        "visibility": "public"
+                    }
+                ],
+                "scope": 151,
+                "src": "61:2351:0",
+                "usedErrors": [],
+                "usedEvents": [
+                    38
+                ]
+            }
+        ],
+        "src": "33:2379:0"
+    },
+    "functionHashes": {
+        "getMedicine(uint256)": "a6742265",
+        "getTotalBatches()": "e561dddc",
+        "registerMedicine(string,string,string,uint256,uint256,uint256)": "046a5a0b"
+    },
+    "gasEstimates": {
+        "creation": {
+            "codeDepositCost": "527000",
+            "executionCost": "22674",
+            "totalCost": "549674"
+        },
+        "external": {
+            "getMedicine(uint256)": "infinite",
+            "getTotalBatches()": "2326",
+            "registerMedicine(string,string,string,uint256,uint256,uint256)": "infinite"
+        }
+    }
+}
