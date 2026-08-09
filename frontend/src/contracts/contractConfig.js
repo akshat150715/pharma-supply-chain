@@ -1,7 +1,15 @@
-// Deployed PharmaSupplyChain contract address on the local Hardhat network.
-// Confirmed via: npx hardhat ignition status chain-31337
-export const CONTRACT_ADDRESS = "0x5FbDB2315678afecb367f032d93F642f64180aa3";
+// Vite exposes only variables prefixed with VITE_ to browser code. These
+// values are public configuration, not secrets; never put a private key here.
+//
+// These Sepolia defaults make the shared hosted demo work immediately. Set
+// VITE_CONTRACT_ADDRESS, VITE_NETWORK_CHAIN_ID, and VITE_NETWORK_NAME to
+// override them for another deployment (such as a local Hardhat demo).
+export const CONTRACT_ADDRESS =
+  import.meta.env.VITE_CONTRACT_ADDRESS ??
+  "0xB2099e9D4D21534aA486661BAc6fa0660d61bc8D";
 
-// Must match the values in blockchain/hardhat.config.ts (localhost network)
-export const NETWORK_RPC_URL = "http://127.0.0.1:8545";
-export const NETWORK_CHAIN_ID = 31337;
+export const NETWORK_CHAIN_ID = Number(
+  import.meta.env.VITE_NETWORK_CHAIN_ID ?? "11155111"
+);
+
+export const NETWORK_NAME = import.meta.env.VITE_NETWORK_NAME ?? "Sepolia";

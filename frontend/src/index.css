@@ -449,8 +449,7 @@ input, select {
 }
 
 .stat-icon {
-  width: 46px;
-  height: 46px;
+  padding: 12px;
   border-radius: var(--radius-sm);
   display: flex;
   align-items: center;
@@ -458,24 +457,45 @@ input, select {
   flex-shrink: 0;
 }
 
+.stat-icon-blue {
+  background: #eff6ff;
+  color: #2563eb;
+}
+
+.stat-icon-purple {
+  background: #faf5ff;
+  color: #9333ea;
+}
+
+.stat-icon-amber {
+  background: #fffbeb;
+  color: #d97706;
+}
+
+.stat-icon-emerald {
+  background: #ecfdf5;
+  color: #059669;
+}
+
+/* Legacy aliases kept for any remaining references */
 .stat-icon.blue {
-  background: var(--mint-100);
-  color: var(--teal-800);
+  background: #eff6ff;
+  color: #2563eb;
 }
 
 .stat-icon.purple {
-  background: var(--plum-100);
-  color: var(--plum);
+  background: #faf5ff;
+  color: #9333ea;
 }
 
 .stat-icon.green {
-  background: var(--success-100);
-  color: var(--success);
+  background: #fffbeb;
+  color: #d97706;
 }
 
 .stat-icon.orange {
-  background: var(--amber-100);
-  color: var(--amber);
+  background: #ecfdf5;
+  color: #059669;
 }
 
 .stat-card p {
@@ -588,11 +608,15 @@ tbody tr:last-child td {
 }
 
 tbody tr {
-  transition: background var(--transition);
+  transition: background-color 150ms ease;
 }
 
 tbody tr:hover {
   background: var(--mint-050);
+}
+
+.dashboard-table tbody tr:hover {
+  background: rgba(248, 250, 252, 0.8);
 }
 
 td strong {
@@ -605,6 +629,22 @@ td strong {
 td small {
   font-size: 12px;
   color: var(--text-secondary);
+}
+
+.capitalize-cell {
+  text-transform: capitalize;
+}
+
+.storage-temp-pill {
+  display: inline-block;
+  background: #f0f9ff;
+  color: #0369a1;
+  padding: 4px 8px;
+  border-radius: 6px;
+  font-size: 12px;
+  font-weight: 500;
+  border: 1px solid #e0f2fe;
+  white-space: nowrap;
 }
 
 /* Status stamps */
@@ -622,22 +662,36 @@ td small {
   border: 1px solid transparent;
 }
 
+.status-emerald,
 .status.verified {
-  background: var(--success-100);
-  color: var(--success);
-  border-color: rgba(47, 158, 100, 0.25);
+  background: #d1fae5;
+  color: #065f46;
+  border-color: #a7f3d0;
 }
 
+.status-amber,
 .status.transit {
-  background: var(--mint-100);
-  color: var(--teal-800);
-  border-color: rgba(27, 107, 94, 0.2);
+  background: #fef3c7;
+  color: #92400e;
+  border-color: #fde68a;
+}
+
+.status-blue {
+  background: #dbeafe;
+  color: #1e40af;
+  border-color: #bfdbfe;
+}
+
+.status-rose {
+  background: #ffe4e6;
+  color: #9f1239;
+  border-color: #fecdd3;
 }
 
 .status.pending {
-  background: var(--amber-100);
-  color: var(--amber);
-  border-color: rgba(201, 138, 44, 0.25);
+  background: #fef3c7;
+  color: #92400e;
+  border-color: #fde68a;
 }
 
 /* Blockchain status card */
@@ -740,6 +794,48 @@ input[type="text"]::placeholder {
   font-family: var(--font-mono);
   color: var(--text-secondary);
   opacity: 0.6;
+}
+
+.medicine-form,
+.inline-form {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  align-items: end;
+}
+
+.medicine-form label {
+  display: grid;
+  gap: 7px;
+  min-width: 220px;
+  flex: 1 1 280px;
+  color: var(--text-secondary);
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.medicine-form input,
+.inline-form input {
+  min-height: 44px;
+  padding: 10px 12px;
+  font: inherit;
+}
+
+.inline-form input {
+  flex: 1 1 260px;
+}
+
+.result-card {
+  margin-top: 20px;
+  padding: 18px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  background: var(--surface);
+}
+
+.result-card p {
+  margin: 8px 0;
+  color: var(--text-secondary);
 }
 
 /* =====================================================

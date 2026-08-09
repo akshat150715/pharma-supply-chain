@@ -20,11 +20,39 @@ import {
 import "./index.css";
 
 import PharmaSupplyChainABI from "./contracts/PharmaSupplyChainABI.json";
-import { CONTRACT_ADDRESS, NETWORK_CHAIN_ID } from "./contracts/contractConfig.js";
+import {
+  CONTRACT_ADDRESS,
+  NETWORK_CHAIN_ID,
+  NETWORK_NAME,
+} from "./contracts/contractConfig.js";
 
 // Must match the Solidity contract's Role enum order exactly:
 // enum Role { None, Manufacturer, Distributor, Pharmacy, Regulator }
 const ROLE_LABELS = ["None", "Manufacturer", "Distributor", "Pharmacy", "Regulator"];
+const BATCH_STATUS_LABELS = ["Created", "In Transit", "Sold", "Recalled"];
+
+const formatDate = (timestamp) =>
+  timestamp ? new Date(Number(timestamp) * 1000).toLocaleDateString() : "—";
+
+const shortAddress = (address) =>
+  address ? `${address.slice(0, 6)}...${address.slice(-4)}` : "—";
+
+const titleCase = (value = "") => value.replace(/\b\w/g, (letter) => letter.toUpperCase());
+
+const getStatusClass = (status = "") => {
+  const key = status.trim().toLowerCase();
+  if (key === "in transit") return "status-amber";
+  if (key === "delivered" || key === "sold") return "status-blue";
+  if (key === "recalled" || key === "expired") return "status-rose";
+  return "status-emerald";
+};
+
+// Some browsers expose several wallet extensions through window.ethereum.
+// Always prefer MetaMask instead of accidentally using a local Hardhat wallet.
+const getMetaMaskProvider = () => {
+  if (!window.ethereum) return null;
+  return window.ethereum.providers?.find((provider) => provider.isMetaMask) ?? window.ethereum;
+};
 
 function App() {
   const [activeMenu, setActiveMenu] = useState("Dashboard");
@@ -50,6 +78,189 @@ function App() {
   const [registerUserStatus, setRegisterUserStatus] = useState(""); // "", "confirming", "pending", "success", "error"
   const [registerUserMessage, setRegisterUserMessage] = useState("");
   const [registerUserResult, setRegisterUserResult] = useState(null);
+
+  // Medicine registration and lookup state
+  const [medicineForm, setMedicineForm] = useState({
+    medicineName: "", batchNumber: "", manufacturerName: "", manufacturingDate: "", expiryDate: "", quantity: "",
+  });
+  const [medicineMessage, setMedicineMessage] = useState("");
+  const [medicineError, setMedicineError] = useState(false);
+  const [lookupBatchId, setLookupBatchId] = useState("");
+  const [lookupResult, setLookupResult] = useState(null);
+  const [lookupHistory, setLookupHistory] = useState([]);
+  const [lookupMessage, setLookupMessage] = useState("");
+  const [verifyBatchId, setVerifyBatchId] = useState("");
+  const [verifyResult, setVerifyResult] = useState(null);
+  const [verifyMessage, setVerifyMessage] = useState("");
+  const [transferBatchId, setTransferBatchId] = useState("");
+  const [transferTo, setTransferTo] = useState("");
+  const [transferMessage, setTransferMessage] = useState("");
+  const [recallBatchId, setRecallBatchId] = useState("");
+  const [recallMessage, setRecallMessage] = useState("");
+
+  // Simple tester-facing records. They stay in this browser so a tester can
+  // use the app without creating a wallet or understanding blockchain roles.
+  const [testUsers, setTestUsers] = useState(() => JSON.parse(localStorage.getItem("pharma-test-users") || "[]"));
+  const [testMedicines, setTestMedicines] = useState(() => JSON.parse(localStorage.getItem("pharma-test-medicines") || "[]").map((medicine) => ({
+    ...medicine,
+    expiryDate: medicine.expiryDate || "2026-12-31",
+    storageTemp: medicine.storageTemp || "2°C - 8°C",
+  })));
+  const [simpleUser, setSimpleUser] = useState({ name: "", email: "", organisation: "", role: "Customer" });
+  const [simpleMedicine, setSimpleMedicine] = useState({ name: "", batchNumber: "", manufacturer: "", quantity: "", manufacturingDate: "", expiryDate: "", storageTemp: "2°C - 8°C" });
+  const [simpleMessage, setSimpleMessage] = useState("");
+  const [medicineSearch, setMedicineSearch] = useState("");
+
+  const historicalBaseline = (() => {
+    try { return JSON.parse(localStorage.getItem("pharma-metrics-baseline") || "null"); } catch { return null; }
+  })();
+  const metricCaption = (metric, count) => {
+    const baseline = historicalBaseline?.[metric];
+    if (count > 5 && Number.isFinite(baseline) && baseline >= 0) {
+      const growth = baseline === 0 ? 100 : ((count - baseline) / baseline) * 100;
+      return `↑ ${growth.toFixed(1)}% this month`;
+    }
+    return "Updated today";
+  };
+
+  const renderGrowthBadge = (metric, count, fallback) => {
+    if (count <= 5) return null;
+    const caption = metricCaption(metric, count);
+    return (
+      <span className="positive">{caption !== "Updated today" ? caption : fallback}</span>
+    );
+  };
+
+  const saveTestUsers = (users) => { setTestUsers(users); localStorage.setItem("pharma-test-users", JSON.stringify(users)); };
+  const saveTestMedicines = (medicines) => { setTestMedicines(medicines); localStorage.setItem("pharma-test-medicines", JSON.stringify(medicines)); };
+
+  const handleSimpleUser = (e) => {
+    e.preventDefault();
+    if (!simpleUser.name || !simpleUser.email) return;
+    saveTestUsers([{ ...simpleUser, id: crypto.randomUUID() }, ...testUsers]);
+    setSimpleUser({ name: "", email: "", organisation: "", role: "Customer" });
+  };
+
+  const handleSimpleMedicine = (e) => {
+    e.preventDefault();
+    setSimpleMessage("");
+    const { name, batchNumber, manufacturer, quantity, manufacturingDate, expiryDate } = simpleMedicine;
+    if (!name || !batchNumber || !manufacturer || !quantity || !manufacturingDate || !expiryDate) { setSimpleMessage("Please complete every field."); return; }
+    if (testMedicines.some((medicine) => medicine.batchNumber.toLowerCase() === batchNumber.toLowerCase())) { setSimpleMessage("This batch number already exists."); return; }
+    if (expiryDate <= manufacturingDate) { setSimpleMessage("Expiry date must be after manufacturing date."); return; }
+    saveTestMedicines([{ ...simpleMedicine, id: crypto.randomUUID(), status: "Registered" }, ...testMedicines]);
+    setSimpleMedicine({ name: "", batchNumber: "", manufacturer: "", quantity: "", manufacturingDate: "", expiryDate: "", storageTemp: "2°C - 8°C" });
+    setSimpleMessage("Medicine added successfully. It is now visible in Medicines and Dashboard.");
+  };
+
+  const deleteTestMedicine = (id) => {
+    if (!window.confirm("Delete this medicine from the tester list?")) return;
+    saveTestMedicines(testMedicines.filter((medicine) => medicine.id !== id));
+    setLookupBatchId("");
+    setVerifyBatchId("");
+  };
+
+  const friendlyError = (error) => {
+    if (error?.code === "ACTION_REJECTED" || error?.code === 4001) return "You rejected the transaction in MetaMask.";
+    return error?.reason || error?.shortMessage || error?.message || "Something went wrong. Please try again.";
+  };
+
+  const requireContract = () => {
+    if (!contract || !walletAddress || !isCorrectNetwork) {
+      throw new Error(`Connect MetaMask to ${NETWORK_NAME} before continuing.`);
+    }
+  };
+
+  // The contract stores batches by numeric ID but publishes each human-readable
+  // batch number in MedicineRegistered. Accept either value in the UI.
+  const resolveBatchId = async (value) => {
+    const normalized = value.trim();
+    if (/^\d+$/.test(normalized) && Number(normalized) > 0) return normalized;
+    if (!normalized) throw new Error("Enter a batch number or Batch ID.");
+    const events = await contract.queryFilter(contract.filters.MedicineRegistered());
+    const match = events.find((event) =>
+      event.args?.batchNumber?.toLowerCase() === normalized.toLowerCase()
+    );
+    if (!match) throw new Error("No medicine batch matches that batch number.");
+    return match.args.batchId.toString();
+  };
+
+  const handleRegisterMedicine = async (e) => {
+    e.preventDefault();
+    setMedicineMessage("");
+    try {
+      requireContract();
+      // Read the current role from Sepolia at submit time. This avoids blocking
+      // a newly registered Manufacturer because React still displays an older role.
+      const currentRole = Number(await contract.getRole(walletAddress));
+      setUserRole(currentRole);
+      if (currentRole !== 1) throw new Error("Only a registered Manufacturer can register medicine.");
+      const { medicineName, batchNumber, manufacturerName, manufacturingDate, expiryDate, quantity } = medicineForm;
+      if (!medicineName || !batchNumber || !manufacturerName || !manufacturingDate || !expiryDate || !quantity) throw new Error("Please complete every field.");
+      const madeAt = Math.floor(new Date(`${manufacturingDate}T00:00:00`).getTime() / 1000);
+      const expiresAt = Math.floor(new Date(`${expiryDate}T00:00:00`).getTime() / 1000);
+      if (!Number.isFinite(madeAt) || !Number.isFinite(expiresAt) || expiresAt <= madeAt) throw new Error("Expiry date must be after the manufacturing date.");
+      if (Number(quantity) <= 0) throw new Error("Quantity must be greater than zero.");
+      setMedicineError(false);
+      setMedicineMessage("Waiting for MetaMask confirmation...");
+      const tx = await contract.registerMedicine(medicineName, batchNumber, manufacturerName, madeAt, expiresAt, quantity);
+      setMedicineMessage("Transaction submitted. Waiting for confirmation...");
+      const receipt = await tx.wait();
+      const log = receipt.logs.map((item) => { try { return contract.interface.parseLog(item); } catch { return null; } }).find((item) => item?.name === "MedicineRegistered");
+      setMedicineMessage(`Medicine registered successfully. Batch ID: ${log ? log.args.batchId.toString() : "see transaction"}.`);
+      setMedicineForm({ medicineName: "", batchNumber: "", manufacturerName: "", manufacturingDate: "", expiryDate: "", quantity: "" });
+    } catch (error) {
+      setMedicineError(true);
+      setMedicineMessage(friendlyError(error));
+    }
+  };
+
+  const handleTrack = async (e) => {
+    e.preventDefault();
+    setLookupResult(null); setLookupHistory([]); setLookupMessage("");
+    try {
+      requireContract();
+      const batchId = await resolveBatchId(lookupBatchId);
+      const [batch, history] = await Promise.all([contract.getMedicine(batchId), contract.getTransferHistory(batchId)]);
+      setLookupResult(batch); setLookupHistory(history);
+    } catch (error) { setLookupMessage(friendlyError(error)); }
+  };
+
+  const handleVerify = async (e) => {
+    e.preventDefault(); setVerifyResult(null); setVerifyMessage("");
+    try {
+      requireContract();
+      const batchId = await resolveBatchId(verifyBatchId);
+      const result = await contract.verifyBatch(batchId);
+      if (!result.exists) throw new Error("This medicine batch does not exist.");
+      setVerifyResult(result);
+    } catch (error) { setVerifyMessage(friendlyError(error)); }
+  };
+
+  const handleTransfer = async (e) => {
+    e.preventDefault(); setTransferMessage("");
+    try {
+      requireContract();
+      if (!/^\d+$/.test(transferBatchId) || Number(transferBatchId) < 1) throw new Error("Enter a valid Batch ID.");
+      if (!ethers.isAddress(transferTo)) throw new Error("Enter a valid recipient wallet address.");
+      setTransferMessage("Waiting for MetaMask confirmation...");
+      const tx = await contract.transferBatch(transferBatchId, transferTo);
+      await tx.wait();
+      setTransferMessage("Batch transferred successfully."); setTransferBatchId(""); setTransferTo("");
+    } catch (error) { setTransferMessage(friendlyError(error)); }
+  };
+
+  const handleRecall = async (e) => {
+    e.preventDefault(); setRecallMessage("");
+    try {
+      requireContract();
+      if (!isAdmin) throw new Error("Only the contract admin (regulator) can recall a batch.");
+      if (!/^\d+$/.test(recallBatchId) || Number(recallBatchId) < 1) throw new Error("Enter a valid Batch ID.");
+      setRecallMessage("Waiting for MetaMask confirmation...");
+      const tx = await contract.recallBatch(recallBatchId);
+      await tx.wait(); setRecallMessage("Batch recalled successfully."); setRecallBatchId("");
+    } catch (error) { setRecallMessage(friendlyError(error)); }
+  };
 
   // Fetch the connected account's role from the contract
   const fetchUserRole = useCallback(async (contractInstance, address) => {
@@ -83,7 +294,7 @@ function App() {
 
       if (!onCorrectNetwork) {
         setConnectionError(
-          `Wrong network detected (chain ID ${currentChainId}). Please switch MetaMask to the local Hardhat network (chain ID ${NETWORK_CHAIN_ID}).`
+          `Wrong network detected (chain ID ${currentChainId}). Please switch MetaMask to ${NETWORK_NAME} (chain ID ${NETWORK_CHAIN_ID}).`
         );
         setSigner(null);
         setContract(null);
@@ -120,20 +331,21 @@ function App() {
 
   // Connect MetaMask wallet
   const connectWallet = async () => {
-    if (!window.ethereum) {
+    const ethereumProvider = getMetaMaskProvider();
+    if (!ethereumProvider) {
       alert("MetaMask is not installed. Please install MetaMask first.");
       return;
     }
 
     try {
-      const accounts = await window.ethereum.request({
+      const accounts = await ethereumProvider.request({
         method: "eth_requestAccounts",
       });
 
       if (accounts.length > 0) {
         setWalletAddress(accounts[0]);
 
-        const browserProvider = new ethers.BrowserProvider(window.ethereum);
+        const browserProvider = new ethers.BrowserProvider(ethereumProvider);
         await setupConnection(browserProvider, accounts[0]);
       }
     } catch (error) {
@@ -142,9 +354,29 @@ function App() {
     }
   };
 
+  const switchToSepolia = async () => {
+    const ethereumProvider = getMetaMaskProvider();
+    if (!ethereumProvider) {
+      setConnectionError("MetaMask is not available in this browser.");
+      return;
+    }
+    try {
+      await ethereumProvider.request({
+        method: "wallet_switchEthereumChain",
+        params: [{ chainId: `0x${NETWORK_CHAIN_ID.toString(16)}` }],
+      });
+      const browserProvider = new ethers.BrowserProvider(ethereumProvider);
+      await setupConnection(browserProvider);
+    } catch (error) {
+      console.error("Could not switch network:", error);
+      setConnectionError(`Could not switch to ${NETWORK_NAME}. Open MetaMask, select Sepolia, then reconnect.`);
+    }
+  };
+
   // React to account or network changes without requiring a manual reconnect
   useEffect(() => {
-    if (!window.ethereum) return;
+    const ethereumProvider = getMetaMaskProvider();
+    if (!ethereumProvider) return;
 
     const handleAccountsChanged = (accounts) => {
       if (accounts.length === 0) {
@@ -155,23 +387,23 @@ function App() {
         setUserRole(null);
       } else {
         setWalletAddress(accounts[0]);
-        const browserProvider = new ethers.BrowserProvider(window.ethereum);
+        const browserProvider = new ethers.BrowserProvider(ethereumProvider);
         setupConnection(browserProvider, accounts[0]);
       }
     };
 
     const handleChainChanged = () => {
       // Simplest safe approach: reload connection state on network switch
-      const browserProvider = new ethers.BrowserProvider(window.ethereum);
+      const browserProvider = new ethers.BrowserProvider(ethereumProvider);
       setupConnection(browserProvider);
     };
 
-    window.ethereum.on("accountsChanged", handleAccountsChanged);
-    window.ethereum.on("chainChanged", handleChainChanged);
+    ethereumProvider.on("accountsChanged", handleAccountsChanged);
+    ethereumProvider.on("chainChanged", handleChainChanged);
 
     return () => {
-      window.ethereum.removeListener("accountsChanged", handleAccountsChanged);
-      window.ethereum.removeListener("chainChanged", handleChainChanged);
+      ethereumProvider.removeListener("accountsChanged", handleAccountsChanged);
+      ethereumProvider.removeListener("chainChanged", handleChainChanged);
     };
   }, [setupConnection]);
 
@@ -250,6 +482,12 @@ function App() {
         address: registeredAddress,
         role: ROLE_LABELS[registeredRole],
       });
+
+      // A role is stored per wallet. Refresh immediately when the admin
+      // registers the currently connected account, so the sidebar stays true.
+      if (registeredAddress.toLowerCase() === walletAddress.toLowerCase()) {
+        await fetchUserRole(contract, walletAddress);
+      }
 
       setNewParticipantAddress("");
       setNewParticipantRole("1");
@@ -405,7 +643,7 @@ function App() {
               <strong>Ethereum Network</strong>
               <small>
                 {isCorrectNetwork
-                  ? "Local Network Connected"
+                  ? `${NETWORK_NAME} Connected`
                   : walletAddress
                   ? "Wrong Network"
                   : "Not Connected"}
@@ -490,10 +728,21 @@ function App() {
           >
             <AlertTriangle size={16} />
             {connectionError}
+            {walletAddress && !isCorrectNetwork && (
+              <button
+                type="button"
+                onClick={switchToSepolia}
+                style={{ marginLeft: "auto", border: 0, borderRadius: "6px", padding: "7px 10px", cursor: "pointer", fontWeight: 700 }}
+              >
+                Switch to {NETWORK_NAME}
+              </button>
+            )}
           </div>
         )}
 
 
+        {activeMenu === "Dashboard" && (
+          <>
         {/* ================= WELCOME ================= */}
 
         <section className="welcome">
@@ -530,7 +779,7 @@ function App() {
 
           <div className="stat-card">
 
-            <div className="stat-icon blue">
+            <div className="stat-icon stat-icon-blue">
               <Package size={24} />
             </div>
 
@@ -538,11 +787,9 @@ function App() {
 
               <p>Total Medicines</p>
 
-              <h2>1,248</h2>
+              <h2>{testMedicines.length}</h2>
 
-              <span className="positive">
-                ↑ 12.5% this month
-              </span>
+              {renderGrowthBadge("totalMedicines", testMedicines.length, "↑ 12.5% this month")}
 
             </div>
 
@@ -553,7 +800,7 @@ function App() {
 
           <div className="stat-card">
 
-            <div className="stat-icon purple">
+            <div className="stat-icon stat-icon-purple">
               <Activity size={24} />
             </div>
 
@@ -561,11 +808,9 @@ function App() {
 
               <p>Active Batches</p>
 
-              <h2>342</h2>
+              <h2>{testMedicines.length}</h2>
 
-              <span className="positive">
-                ↑ 8.2% this month
-              </span>
+              {renderGrowthBadge("activeBatches", testMedicines.length, "↑ 8.2% this month")}
 
             </div>
 
@@ -576,7 +821,7 @@ function App() {
 
           <div className="stat-card">
 
-            <div className="stat-icon green">
+            <div className="stat-icon stat-icon-amber">
               <Truck size={24} />
             </div>
 
@@ -584,11 +829,9 @@ function App() {
 
               <p>In Transit</p>
 
-              <h2>86</h2>
+              <h2>0</h2>
 
-              <span className="positive">
-                ↑ 4.1% this month
-              </span>
+              {renderGrowthBadge("inTransit", 0, "↑ 4.1% this month")}
 
             </div>
 
@@ -599,7 +842,7 @@ function App() {
 
           <div className="stat-card">
 
-            <div className="stat-icon orange">
+            <div className="stat-icon stat-icon-emerald">
               <ShieldCheck size={24} />
             </div>
 
@@ -607,11 +850,9 @@ function App() {
 
               <p>Verified</p>
 
-              <h2>98.7%</h2>
+              <h2>{testMedicines.length ? "100%" : "0%"}</h2>
 
-              <span className="positive">
-                ↑ 2.4% this month
-              </span>
+              {renderGrowthBadge("verified", testMedicines.length, "↑ 2.4% this month")}
 
             </div>
 
@@ -643,7 +884,7 @@ function App() {
 
               </div>
 
-              <button className="view-button">
+              <button className="view-button" onClick={() => setActiveMenu("Medicines")}>
                 View All
               </button>
 
@@ -652,7 +893,7 @@ function App() {
 
             <div className="table-container">
 
-              <table>
+              <table className="dashboard-table">
 
                 <thead>
 
@@ -666,7 +907,13 @@ function App() {
 
                     <th>Quantity</th>
 
+                    <th>Expiry Date</th>
+
+                    <th>Storage Temp</th>
+
                     <th>Status</th>
+
+                    <th>Action</th>
 
                   </tr>
 
@@ -674,6 +921,27 @@ function App() {
 
 
                 <tbody>
+                  {testMedicines.length > 0 ? testMedicines.slice(0, 5).map((medicine) => (
+                    <tr key={medicine.id}>
+                      <td><strong className="capitalize-cell">{titleCase(medicine.name)}</strong></td>
+                      <td>{medicine.batchNumber}</td>
+                      <td className="capitalize-cell">{titleCase(medicine.manufacturer)}</td>
+                      <td>{medicine.quantity}</td>
+                      <td>{medicine.expiryDate || "2026-12-31"}</td>
+                      <td>
+                        <span className="storage-temp-pill">
+                          {medicine.storageTemp || "2°C - 8°C"}
+                        </span>
+                      </td>
+                      <td>
+                        <span className={`status ${getStatusClass(medicine.status)}`}>
+                          {medicine.status}
+                        </span>
+                      </td>
+                      <td><button className="view-button" onClick={() => deleteTestMedicine(medicine.id)}>Delete</button></td>
+                    </tr>
+                  )) : <tr><td colSpan="8">No medicines registered yet.</td></tr>}
+                  {false && <>
 
 
                   {/* Paracetamol */}
@@ -846,6 +1114,7 @@ function App() {
                     </td>
 
                   </tr>
+                  </>}
 
                 </tbody>
 
@@ -905,7 +1174,7 @@ function App() {
                 </span>
 
                 <strong>
-                  Localhost
+                  {NETWORK_NAME}
                 </strong>
 
               </div>
@@ -984,9 +1253,19 @@ function App() {
         </section>
 
 
+          </>
+        )}
+
         {/* ================= REGISTER USER ================= */}
 
         {activeMenu === "Register User" && (
+          <section className="dashboard-grid" style={{ marginTop: "24px" }}><div className="card large-card"><div className="card-header"><div><h3>Register User</h3><p>Add a tester or supply-chain participant. No wallet details are needed.</p></div></div>
+            <form onSubmit={handleSimpleUser} className="medicine-form"><label>Full name<input value={simpleUser.name} placeholder="Name" onChange={(e) => setSimpleUser({ ...simpleUser, name: e.target.value })} required /></label><label>Email address<input type="email" value={simpleUser.email} placeholder="name@company.com" onChange={(e) => setSimpleUser({ ...simpleUser, email: e.target.value })} required /></label><label>Organisation<input value={simpleUser.organisation} placeholder="Organisation name" onChange={(e) => setSimpleUser({ ...simpleUser, organisation: e.target.value })} /></label><label>Role<select value={simpleUser.role} onChange={(e) => setSimpleUser({ ...simpleUser, role: e.target.value })}><option>Customer</option><option>Manufacturer</option><option>Distributor</option><option>Pharmacy</option><option>Regulator</option></select></label><button className="connect-button" type="submit">Register user</button></form>
+            <h3 style={{ marginTop: "28px" }}>Registered Users</h3>{testUsers.length === 0 ? <p>No users registered yet.</p> : <div className="result-card">{testUsers.map((user) => <p key={user.id}><strong>{user.name}</strong> · {user.role} · {user.email}</p>)}</div>}
+          </div></section>
+        )}
+
+        {false && activeMenu === "Register User" && (
           <section className="dashboard-grid" style={{ marginTop: "24px" }}>
             <div className="card large-card">
               <div className="card-header">
@@ -1048,7 +1327,7 @@ function App() {
                         color: "#374151",
                       }}
                     >
-                      Wallet Address
+                      Participant wallet address
                     </label>
                     <input
                       type="text"
@@ -1063,6 +1342,9 @@ function App() {
                         fontSize: "14px",
                       }}
                     />
+                    <small style={{ display: "block", marginTop: "7px", color: "#6b7280" }}>
+                      Ask the participant to open MetaMask and click the copy icon beside their account. Their full address begins with 0x. It is their blockchain account number.
+                    </small>
                   </div>
 
                   <div style={{ marginBottom: "20px" }}>
@@ -1150,6 +1432,75 @@ function App() {
           </section>
         )}
 
+
+        {activeMenu === "Register Medicine" && (
+          <section className="dashboard-grid" style={{ marginTop: "24px" }}><div className="card large-card"><div className="card-header"><div><h3>Register Medicine</h3><p>Add a batch directly. It will appear immediately in Medicines.</p></div></div>
+            <form onSubmit={handleSimpleMedicine} className="medicine-form"><label>Medicine name<input value={simpleMedicine.name} placeholder="Paracetamol" onChange={(e) => setSimpleMedicine({ ...simpleMedicine, name: e.target.value })} required /></label><label>Batch number<input value={simpleMedicine.batchNumber} placeholder="PCM2026001" onChange={(e) => setSimpleMedicine({ ...simpleMedicine, batchNumber: e.target.value })} required /></label><label>Manufacturer<input value={simpleMedicine.manufacturer} placeholder="ABC Pharma" onChange={(e) => setSimpleMedicine({ ...simpleMedicine, manufacturer: e.target.value })} required /></label><label>Quantity<input type="number" min="1" value={simpleMedicine.quantity} placeholder="10000" onChange={(e) => setSimpleMedicine({ ...simpleMedicine, quantity: e.target.value })} required /></label><label>Manufacturing date<input type="date" value={simpleMedicine.manufacturingDate} onChange={(e) => setSimpleMedicine({ ...simpleMedicine, manufacturingDate: e.target.value })} required /></label><label>Expiry date<input type="date" value={simpleMedicine.expiryDate} onChange={(e) => setSimpleMedicine({ ...simpleMedicine, expiryDate: e.target.value })} required /></label><button className="connect-button" type="submit">Register medicine</button></form>{simpleMessage && <p style={{ fontWeight: 600, color: simpleMessage.includes("success") ? "#15803d" : "#b91c1c" }}>{simpleMessage}</p>}
+          </div></section>
+        )}
+
+        {false && activeMenu === "Register Medicine" && (
+          <section className="dashboard-grid" style={{ marginTop: "24px" }}><div className="card large-card"><div className="card-header"><div><h3>Register Medicine Batch</h3><p>Only a wallet registered as Manufacturer can add a batch.</p></div></div>
+            <form onSubmit={handleRegisterMedicine} className="medicine-form">
+              {[['medicineName', 'Medicine name', 'Paracetamol 500mg'], ['batchNumber', 'Batch number', 'PCM2026001'], ['manufacturerName', 'Manufacturer name', 'ABC Pharma'], ['quantity', 'Quantity', '10000']].map(([field, label, placeholder]) => <label key={field}>{label}<input type={field === 'quantity' ? 'number' : 'text'} min={field === 'quantity' ? '1' : undefined} value={medicineForm[field]} placeholder={placeholder} onChange={(e) => setMedicineForm({ ...medicineForm, [field]: e.target.value })} /></label>)}
+              <label>Manufacturing date<input type="date" value={medicineForm.manufacturingDate} onChange={(e) => setMedicineForm({ ...medicineForm, manufacturingDate: e.target.value })} /></label>
+              <label>Expiry date<input type="date" value={medicineForm.expiryDate} onChange={(e) => setMedicineForm({ ...medicineForm, expiryDate: e.target.value })} /></label>
+              <button className="connect-button" type="submit">Register Medicine</button>
+            </form>
+            {medicineMessage && <p style={{ color: medicineError ? '#b91c1c' : '#15803d', fontWeight: 600 }}>{medicineMessage}</p>}
+          </div></section>
+        )}
+
+        {activeMenu === "Track Medicine" && (
+          <section className="dashboard-grid" style={{ marginTop: "24px" }}><div className="card large-card"><div className="card-header"><div><h3>Track Medicine</h3><p>Enter a batch number to view its supply-chain details.</p></div></div>
+            <div className="inline-form"><input type="text" value={lookupBatchId} placeholder="e.g. PCM2026001" onChange={(e) => setLookupBatchId(e.target.value)} /><button className="connect-button" type="button">Track</button></div>
+            {lookupBatchId && (() => { const medicine = testMedicines.find((item) => item.batchNumber.toLowerCase() === lookupBatchId.toLowerCase()); return medicine ? <div className="result-card"><h3>{medicine.name}</h3><p>Batch number: {medicine.batchNumber}</p><p>Manufacturer: {medicine.manufacturer}</p><p>Quantity: {medicine.quantity}</p><p>Manufactured: {medicine.manufacturingDate} · Expires: {medicine.expiryDate}</p><p>Status: {medicine.status}</p></div> : <p style={{ marginTop: "18px" }}>Enter a batch number from the Medicines page.</p>; })()}
+          </div></section>
+        )}
+
+        {false && activeMenu === "Track Medicine" && (
+          <section className="dashboard-grid" style={{ marginTop: "24px" }}><div className="card large-card"><div className="card-header"><div><h3>Track Medicine</h3><p>Enter the batch number (for example, PCM2026001) or the internal Batch ID.</p></div></div>
+            <form onSubmit={handleTrack} className="inline-form"><input type="text" value={lookupBatchId} placeholder="e.g. PCM2026001" onChange={(e) => setLookupBatchId(e.target.value)} /><button className="connect-button" type="submit">Track</button></form>
+            {lookupMessage && <p style={{ color: '#b91c1c', fontWeight: 600 }}>{lookupMessage}</p>}
+            {lookupResult && <div className="result-card"><h3>{lookupResult.medicineName} — {lookupResult.batchNumber}</h3><p>Manufacturer: {lookupResult.manufacturerName}</p><p>Quantity: {lookupResult.quantity.toString()} · Status: {BATCH_STATUS_LABELS[Number(lookupResult.status)]}</p><p>Manufactured: {formatDate(lookupResult.manufacturingDate)} · Expires: {formatDate(lookupResult.expiryDate)}</p><p>Current owner: {shortAddress(lookupResult.currentOwner)}</p><h4>Transfer history</h4>{lookupHistory.length ? lookupHistory.map((item, index) => <p key={index}>{shortAddress(item.from)} → {shortAddress(item.to)} on {formatDate(item.timestamp)}</p>) : <p>No transfers yet; this batch remains with its manufacturer.</p>}</div>}
+          </div></section>
+        )}
+
+        {activeMenu === "Verify Medicine" && (
+          <section className="dashboard-grid" style={{ marginTop: "24px" }}><div className="card large-card"><div className="card-header"><div><h3>Verify Medicine</h3><p>Enter a batch number to check whether this medicine is registered and valid.</p></div></div>
+            <div className="inline-form"><input type="text" value={verifyBatchId} placeholder="e.g. PCM2026001" onChange={(e) => setVerifyBatchId(e.target.value)} /><button className="connect-button" type="button">Verify</button></div>
+            {verifyBatchId && (() => { const medicine = testMedicines.find((item) => item.batchNumber.toLowerCase() === verifyBatchId.toLowerCase()); const expired = medicine && new Date(`${medicine.expiryDate}T23:59:59`) < new Date(); return medicine ? <div className="result-card"><h3 style={{ color: expired ? "#b91c1c" : "#15803d" }}>{expired ? "Medicine is expired" : "Medicine is verified"}</h3><p>{medicine.name} · Batch {medicine.batchNumber}</p><p>Manufacturer: {medicine.manufacturer}</p><p>Expiry date: {medicine.expiryDate}</p><p>Status: {expired ? "Expired" : "Valid"}</p></div> : <p style={{ marginTop: "18px", color: "#b91c1c" }}>No medicine was found with this batch number.</p>; })()}
+          </div></section>
+        )}
+
+        {false && activeMenu === "Verify Medicine" && (
+          <section className="dashboard-grid" style={{ marginTop: "24px" }}><div className="card large-card"><div className="card-header"><div><h3>Verify Medicine</h3><p>Verify authenticity and expiry status directly on Sepolia.</p></div></div>
+            <form onSubmit={handleVerify} className="inline-form"><input type="text" value={verifyBatchId} placeholder="Batch number or ID" onChange={(e) => setVerifyBatchId(e.target.value)} /><button className="connect-button" type="submit">Verify</button></form>
+            {verifyMessage && <p style={{ color: '#b91c1c', fontWeight: 600 }}>{verifyMessage}</p>}
+            {verifyResult && <div className="result-card"><h3 style={{ color: verifyResult.authentic ? '#15803d' : '#b91c1c' }}>{verifyResult.authentic ? 'Authentic medicine batch' : 'Not authentic'}</h3><p>{verifyResult.medicineName} — {verifyResult.batchNumber}</p><p>Manufacturer: {verifyResult.manufacturerName}</p><p>Status: {BATCH_STATUS_LABELS[Number(verifyResult.status)]} · {verifyResult.expired ? 'Expired' : 'Not expired'}</p><p>Current owner: {shortAddress(verifyResult.currentOwner)}</p></div>}
+          </div></section>
+        )}
+
+        {activeMenu === "Medicines" && (
+          <section className="dashboard-grid" style={{ marginTop: "24px" }}><div className="card large-card"><div className="card-header"><div><h3>Medicine Batches</h3><p>View and manage all registered medicine batches.</p></div><button className="connect-button" onClick={() => setActiveMenu("Register Medicine")}>+ Register medicine</button></div>
+            <input type="text" value={medicineSearch} placeholder="Search by medicine, batch, or manufacturer" style={{ width: "100%", padding: "12px", marginBottom: "18px" }} onChange={(e) => setMedicineSearch(e.target.value)} />
+            <div className="table-container"><table><thead><tr><th>Medicine</th><th>Batch Number</th><th>Manufacturer</th><th>Quantity</th><th>Status</th><th>Action</th></tr></thead><tbody>{testMedicines.filter((medicine) => `${medicine.name} ${medicine.batchNumber} ${medicine.manufacturer}`.toLowerCase().includes(medicineSearch.toLowerCase())).map((medicine) => <tr key={medicine.id}><td><strong>{medicine.name}</strong></td><td>{medicine.batchNumber}</td><td>{medicine.manufacturer}</td><td>{medicine.quantity}</td><td><span className="status verified">Registered</span></td><td><button className="view-button" onClick={() => { setLookupBatchId(medicine.batchNumber); setActiveMenu("Track Medicine"); }}>Track</button></td></tr>)}{testMedicines.length === 0 && <tr><td colSpan="6">No medicines yet. Click “Register medicine” to add the first one.</td></tr>}</tbody></table></div>
+          </div></section>
+        )}
+
+        {false && activeMenu === "Medicines" && (
+          <section className="dashboard-grid" style={{ marginTop: "24px" }}><div className="card large-card"><div className="card-header"><div><h3>Transfer Medicine Batch</h3><p>The current owner can transfer a batch to the next registered participant.</p></div></div>
+            <form onSubmit={handleTransfer} className="medicine-form"><label>Batch ID<input type="number" min="1" value={transferBatchId} onChange={(e) => setTransferBatchId(e.target.value)} /></label><label>Recipient wallet address<input value={transferTo} placeholder="0x..." onChange={(e) => setTransferTo(e.target.value)} /></label><button className="connect-button" type="submit">Transfer Batch</button></form>
+            {transferMessage && <p style={{ fontWeight: 600 }}>{transferMessage}</p>}
+          </div></section>
+        )}
+
+        {activeMenu === "Blockchain" && (
+          <section className="dashboard-grid" style={{ marginTop: "24px" }}><div className="card large-card"><div className="card-header"><div><h3>Blockchain Controls</h3><p>Contract: {shortAddress(CONTRACT_ADDRESS)} on {NETWORK_NAME}.</p></div></div>
+            <form onSubmit={handleRecall} className="inline-form"><input type="number" min="1" value={recallBatchId} placeholder="Batch ID to recall" onChange={(e) => setRecallBatchId(e.target.value)} /><button className="connect-button" type="submit">Recall Batch</button></form>
+            <p>Only the contract admin (regulator) can recall a medicine batch.</p>{recallMessage && <p style={{ fontWeight: 600 }}>{recallMessage}</p>}
+          </div></section>
+        )}
 
         {/* ================= FOOTER ================= */}
 

@@ -186,3 +186,207 @@ contract PharmaSupplyChain {
             _expiryDate > _manufacturingDate,
             "Expiry must be after manufacturing date"
         );
+
+        batches[nextBatchId] = MedicineBatch({
+            id: nextBatchId,
+            medicineName: _medicineName,
+            batchNumber: _batchNumber,
+            manufacturerName: _manufacturerName,
+            manufacturerAddress: msg.sender,
+            manufacturingDate: _manufacturingDate,
+            expiryDate: _expiryDate,
+            quantity: _quantity,
+            currentOwner: msg.sender,
+            previousOwner: address(0),
+            status: BatchStatus.Created,
+            exists: true
+        });
+
+        emit MedicineRegistered(
+            nextBatchId,
+            _medicineName,
+            _batchNumber,
+            msg.sender
+        );
+
+        nextBatchId++;
+    }
+
+    // ============ SUPPLY CHAIN TRANSFER ============
+
+    function transferBatch(
+        uint256 _batchId,
+        address _to
+    )
+        public
+        batchExists(_batchId)
+    {
+        MedicineBatch storage batch = batches[_batchId];
+
+        require(
+            batch.status != BatchStatus.Recalled,
+            "Cannot transfer a recalled batch"
+        );
+
+        require(
+            batch.currentOwner == msg.sender,
+            "Only the current owner can transfer this batch"
+        );
+
+        require(
+            _to != address(0),
+            "Invalid recipient address"
+        );
+
+        Role senderRole = roles[msg.sender];
+        Role recipientRole = roles[_to];
+
+        if (senderRole == Role.Manufacturer) {
+            require(
+                recipientRole == Role.Distributor,
+                "Manufacturer can only transfer to a registered Distributor"
+            );
+            batch.status = BatchStatus.InTransit;
+
+        } else if (senderRole == Role.Distributor) {
+            require(
+                recipientRole == Role.Pharmacy,
+                "Distributor can only transfer to a registered Pharmacy"
+            );
+            batch.status = BatchStatus.InTransit;
+
+        } else if (senderRole == Role.Pharmacy) {
+            batch.status = BatchStatus.Sold;
+
+        } else {
+            revert("Caller role is not authorized to transfer batches");
+        }
+
+        batch.previousOwner = batch.currentOwner;
+        batch.currentOwner = _to;
+
+        transferHistory[_batchId].push(Transfer({
+            from: msg.sender,
+            to: _to,
+            timestamp: block.timestamp,
+            quantity: batch.quantity
+        }));
+
+        emit BatchTransferred(
+            _batchId,
+            msg.sender,
+            _to,
+            batch.quantity,
+            block.timestamp
+        );
+    }
+
+    // ============ RECALL MANAGEMENT ============
+
+    function recallBatch(
+        uint256 _batchId
+    )
+        public
+        onlyAdmin
+        batchExists(_batchId)
+    {
+        batches[_batchId].status = BatchStatus.Recalled;
+
+        emit BatchRecalled(_batchId, msg.sender, block.timestamp);
+    }
+
+    // ============ READ / VERIFICATION FUNCTIONS ============
+
+    function getMedicine(
+        uint256 _batchId
+    )
+        public
+        view
+        batchExists(_batchId)
+        returns (MedicineBatch memory)
+    {
+        return batches[_batchId];
+    }
+
+    function getTransferHistory(
+        uint256 _batchId
+    )
+        public
+        view
+        batchExists(_batchId)
+        returns (Transfer[] memory)
+    {
+        return transferHistory[_batchId];
+    }
+
+    function getTotalBatches()
+        public
+        view
+        returns (uint256)
+    {
+        return nextBatchId - 1;
+    }
+
+    function isExpired(
+        uint256 _batchId
+    )
+        public
+        view
+        batchExists(_batchId)
+        returns (bool)
+    {
+        return block.timestamp > batches[_batchId].expiryDate;
+    }
+
+    function verifyBatch(
+        uint256 _batchId
+    )
+        public
+        view
+        returns (
+            bool exists,
+            string memory medicineName,
+            string memory batchNumber,
+            string memory manufacturerName,
+            uint256 manufacturingDate,
+            uint256 expiryDate,
+            address currentOwner,
+            BatchStatus status,
+            bool expired,
+            bool authentic
+        )
+    {
+        MedicineBatch memory batch = batches[_batchId];
+
+        if (!batch.exists) {
+            return (
+                false,
+                "",
+                "",
+                "",
+                0,
+                0,
+                address(0),
+                BatchStatus.Created,
+                false,
+                false
+            );
+        }
+
+        bool isExpiredNow = block.timestamp > batch.expiryDate;
+        bool isAuthentic = batch.status != BatchStatus.Recalled && !isExpiredNow;
+
+        return (
+            true,
+            batch.medicineName,
+            batch.batchNumber,
+            batch.manufacturerName,
+            batch.manufacturingDate,
+            batch.expiryDate,
+            batch.currentOwner,
+            batch.status,
+            isExpiredNow,
+            isAuthentic
+        );
+    }
+}

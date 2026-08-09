@@ -1,16 +1,34 @@
-# React + Vite
+# Pharma Supply Chain Frontend
 
-This template provides a minimal setup to get React working in Vite with HMR and some Oxlint rules.
+## Run locally
 
-Currently, two official plugins are available:
+```powershell
+npm install
+npm run dev
+```
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+Without environment variables, the app connects to the local Hardhat network
+(`127.0.0.1:8545`, chain ID `31337`). Start the local Hardhat node and deploy
+the contract before using it in this mode.
 
-## React Compiler
+## Publish a working demo with Vercel
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+The contract must be deployed to a public network first. Deploy
+`../blockchain/ignition/modules/PharmaSupplyChain.ts` to Sepolia, then use the
+address printed by Hardhat.
 
-## Expanding the Oxlint configuration
+In the Vercel project, open **Settings → Environment Variables** and add these
+values for the Production environment:
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and Oxlint's TypeScript related rules in your project.
+| Name | Value |
+| --- | --- |
+| `VITE_CONTRACT_ADDRESS` | The deployed Sepolia contract address |
+| `VITE_NETWORK_CHAIN_ID` | `11155111` |
+| `VITE_NETWORK_NAME` | `Sepolia` |
+
+Redeploy after saving them. The variables are compiled into the frontend, so
+they are suitable only for public settings. Never add a wallet private key,
+seed phrase, or RPC-provider secret to Vercel or this repository.
+
+Visitors need MetaMask set to Sepolia. The wallet that deployed the contract is
+the admin and retains permission to register participants.
